@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import org.example.quanlisukien.data.entity.Account;
 import org.example.quanlisukien.data.entity.Role;
 import org.example.quanlisukien.data.request.AccountRequest;
+import org.example.quanlisukien.exception.NotFoundException;
 import org.example.quanlisukien.repository.AccountRepository;
 import org.example.quanlisukien.repository.RoleRepository;
 import org.jetbrains.annotations.NotNull;
@@ -33,13 +34,13 @@ public class AccountRegisterServiceImpl implements AccountRegisterService {
   @Override
   public Account register(@NotNull AccountRequest accountRequest) {
     if (accountRepository.existsByUsername(accountRequest.getUsername())) {
-      throw new RuntimeException("username da ton tai");
+      throw new NotFoundException("username da ton tai");
     }
     if (accountRepository.existsByEmail(accountRequest.getEmail())) {
-      throw new RuntimeException("email da ton tai");
+      throw new NotFoundException("email da ton tai");
     }
     if (accountRequest.getPassword() == null) {
-      throw new RuntimeException("password no null");
+      throw new NotFoundException("password no null");
     }
 
     Account account = new Account();

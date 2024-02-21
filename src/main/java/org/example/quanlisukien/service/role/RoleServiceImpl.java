@@ -14,15 +14,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class RoleServiceImpl implements RoleService{
+public class RoleServiceImpl implements RoleService {
 
   private final RoleRepository roleRepository;
   private final IRoleMapper iRoleMapper;
 
-  
 
   @Autowired
-  public RoleServiceImpl(RoleRepository roleRepository, IRoleMapper iRoleMapper) {
+  public RoleServiceImpl(RoleRepository roleRepository,
+      IRoleMapper iRoleMapper) {
     this.roleRepository = roleRepository;
     this.iRoleMapper = iRoleMapper;
   }
@@ -40,13 +40,13 @@ public class RoleServiceImpl implements RoleService{
   public List<RoleResponse> findByAllRole() {
     return roleRepository.findAll()
         .stream()
-        .map(iRoleMapper::convertEntityRolesMapper)
+        .map(iRoleMapper::covertRoleMapper)
         .collect(Collectors.toList());
   }
 
   @Override
   public void deleteByIdRole(Long role_id) {
-    if(roleRepository.existsById(role_id)) {
+    if (roleRepository.existsById(role_id)) {
       roleRepository.deleteById(role_id);
     }
     throw new NotFoundException("no id delete role ");
@@ -56,7 +56,7 @@ public class RoleServiceImpl implements RoleService{
   public Role updateByIdRole(Long role_id, RoleRequest roleRequest) {
     Optional<Role> optionalRole = roleRepository.findById(role_id);
 
-    if(optionalRole.isPresent()) {
+    if (optionalRole.isPresent()) {
       Role role = optionalRole.get();
       role.setRoleName(roleRequest.getRoleName());
       role.setUpdateTime(LocalDateTime.now());

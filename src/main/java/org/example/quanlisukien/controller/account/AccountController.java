@@ -53,7 +53,7 @@ public class AccountController {
 
   @PutMapping("/update/admin")
   public ResponseEntity<?> updateAdminById(@RequestParam Long user_id,
-      @RequestBody AccountRequest accountRequest, @RequestBody String RoleName) {
+      @RequestBody AccountRequest accountRequest, @RequestParam String RoleName) {
     return ResponseEntity.ok(accountService.updateAdminById(user_id, accountRequest, RoleName));
   }
 }

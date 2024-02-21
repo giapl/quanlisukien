@@ -1,6 +1,5 @@
 package org.example.quanlisukien.data.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -30,17 +29,17 @@ public class Role {
   @Column(name = "roleId")
   private Long role_id;
   @Column(name = "roleName")
-  private String RoleName;
+  private String roleName;
 
-//  @JsonFormat(pattern = "yyyy:MM:DD hh:mm:ss")
+
   @Column(name = "createAt")
   private LocalDateTime dateTime;
 
-//  @JsonFormat(pattern = "yyyy:MM:DD hh:mm:ss")
+
   @Column(name = "UpdateAt")
   private LocalDateTime updateTime;
 
   @JsonManagedReference
-  @OneToMany(mappedBy = "role", cascade = CascadeType.ALL , orphanRemoval = true)
+  @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Account> accounts;
 }

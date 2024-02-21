@@ -34,8 +34,10 @@ public class SecurityConfig {
         .csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(requests -> requests
             .requestMatchers(
-                new AntPathRequestMatcher("/api/v1/auth/**", HttpMethod.POST.name()))
+                new AntPathRequestMatcher("/api/v1/auth/register", HttpMethod.POST.name()))
             .permitAll()
+            .requestMatchers(
+                new AntPathRequestMatcher("/api/v1/auth/login", HttpMethod.POST.name())).permitAll()
             .requestMatchers(
                 new AntPathRequestMatcher("/api/v1/accounts/all", HttpMethod.GET.name()))
             .hasAuthority("ADMIN")
