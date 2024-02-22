@@ -7,13 +7,17 @@ import java.util.stream.Collectors;
 import org.example.quanlisukien.data.entity.Role;
 import org.example.quanlisukien.data.request.RoleRequest;
 import org.example.quanlisukien.data.response.RoleResponse;
+import org.example.quanlisukien.exception.InternalServerException;
 import org.example.quanlisukien.exception.NotFoundException;
 import org.example.quanlisukien.mapper.IRoleMapper;
 import org.example.quanlisukien.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class RoleServiceImpl implements RoleService {
 
   private final RoleRepository roleRepository;
@@ -33,7 +37,12 @@ public class RoleServiceImpl implements RoleService {
     role.setRoleName(roleRequest.getRoleName());
     role.setDateTime(LocalDateTime.now());
     role.setUpdateTime(LocalDateTime.now());
-    return roleRepository.save(role);
+    try {
+      return roleRepository.save(role);
+    } catch (DataAccessException ex) {
+      throw new InternalServerException("no save database");
+    }
+
   }
 
   @Override
@@ -48,8 +57,10 @@ public class RoleServiceImpl implements RoleService {
   public void deleteByIdRole(Long role_id) {
     if (roleRepository.existsById(role_id)) {
       roleRepository.deleteById(role_id);
+    } else {
+      throw new NotFoundException("no id delete role ");
     }
-    throw new NotFoundException("no id delete role ");
+
   }
 
   @Override

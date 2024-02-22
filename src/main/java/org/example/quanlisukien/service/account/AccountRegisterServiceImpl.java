@@ -4,11 +4,13 @@ import java.time.LocalDateTime;
 import org.example.quanlisukien.data.entity.Account;
 import org.example.quanlisukien.data.entity.Role;
 import org.example.quanlisukien.data.request.AccountRequest;
+import org.example.quanlisukien.exception.InternalServerException;
 import org.example.quanlisukien.exception.NotFoundException;
 import org.example.quanlisukien.repository.AccountRepository;
 import org.example.quanlisukien.repository.RoleRepository;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,6 +55,11 @@ public class AccountRegisterServiceImpl implements AccountRegisterService {
 
     account.setDateTime(LocalDateTime.now());
     account.setUpdateTime(LocalDateTime.now());
-    return accountRepository.save(account);
+    try {
+      return accountRepository.save(account);
+    } catch (DataAccessException ex) {
+      throw new InternalServerException("no save database");
+    }
+
   }
 }

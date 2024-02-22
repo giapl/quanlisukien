@@ -1,11 +1,13 @@
 package org.example.quanlisukien.controller.account;
 
+import org.example.quanlisukien.data.request.AccountAdminRequest;
 import org.example.quanlisukien.data.request.AccountRequest;
 import org.example.quanlisukien.service.account.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,8 +54,11 @@ public class AccountController {
   }
 
   @PutMapping("/update/admin")
-  public ResponseEntity<?> updateAdminById(@RequestParam Long user_id,
-      @RequestBody AccountRequest accountRequest, @RequestParam String RoleName) {
-    return ResponseEntity.ok(accountService.updateAdminById(user_id, accountRequest, RoleName));
+  public ResponseEntity<?> updateAdminById(@RequestParam Long user_id ,@RequestBody AccountAdminRequest accountAdminRequest) {
+    return ResponseEntity.ok(accountService.updateAdminById(user_id,accountAdminRequest));
+  }
+  @PostMapping("/create/admin")
+  public ResponseEntity<?> createAccountAdmin(@RequestBody AccountAdminRequest accountAdminRequest) {
+    return ResponseEntity.ok(accountService.createAccountAdmin(accountAdminRequest));
   }
 }

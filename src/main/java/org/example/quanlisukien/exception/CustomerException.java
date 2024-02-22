@@ -16,4 +16,9 @@ public class CustomerException {
     return new ErrorResponse(HttpStatus.NOT_FOUND,ex.getMessage(), LocalDateTime.now());
   }
 
+  @ExceptionHandler(InternalServerException.class)
+  @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+  public ErrorResponse internalServerException(InternalServerException ex , WebRequest request) {
+    return new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR,ex.getMessage(),LocalDateTime.now());
+  }
 }

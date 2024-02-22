@@ -3,6 +3,7 @@ package org.example.quanlisukien.service.account;
 import java.util.List;
 import org.example.quanlisukien.data.entity.Account;
 import org.example.quanlisukien.data.entity.Role;
+import org.example.quanlisukien.data.request.AccountAdminRequest;
 import org.example.quanlisukien.data.request.AccountRequest;
 
 public interface AccountService {
@@ -17,5 +18,7 @@ public interface AccountService {
 
   Account updateByIdPassword(Long user_id , AccountRequest accountRequest); //method cap nhat mat khau
 
-  Account updateAdminById(Long user_id , AccountRequest accountRequest, String RoleName); //method cap nhat accout cho admin
+  Account updateAdminById(Long user_id , AccountAdminRequest accountAdminRequest); //method cap nhat accout cho admin
+
+  Account createAccountAdmin(AccountAdminRequest accountAdminRequest); //method tao account cho admin;
 }

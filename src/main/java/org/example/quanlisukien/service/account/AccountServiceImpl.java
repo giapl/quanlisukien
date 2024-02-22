@@ -5,15 +5,20 @@ import java.util.List;
 import java.util.Optional;
 import org.example.quanlisukien.data.entity.Account;
 import org.example.quanlisukien.data.entity.Role;
+import org.example.quanlisukien.data.request.AccountAdminRequest;
 import org.example.quanlisukien.data.request.AccountRequest;
+import org.example.quanlisukien.exception.InternalServerException;
 import org.example.quanlisukien.exception.NotFoundException;
 import org.example.quanlisukien.repository.AccountRepository;
 import org.example.quanlisukien.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class AccountServiceImpl implements AccountService {
 
   private final AccountRepository accountRepository;
@@ -50,43 +55,69 @@ public class AccountServiceImpl implements AccountService {
   public void deleteByIdAccount(Long user_id) {
     if (accountRepository.existsById(user_id)) {
       accountRepository.deleteById(user_id);
+    } else {
+      throw new NotFoundException("no id database : " + user_id);
     }
-    throw new NotFoundException("no id database : "+user_id);
   }
 
   @Override
   public Account updateByIdPassword(Long user_id, AccountRequest accountRequest) {
     Optional<Account> optionalAccount = accountRepository.findByUser_id(user_id);
-    if(optionalAccount.isPresent()) {
+    if (optionalAccount.isPresent()) {
       Account account = optionalAccount.get();
       account.setPassword(passwordEncoder.encode(accountRequest.getPassword()));
       account.setUpdateTime(LocalDateTime.now());
       return accountRepository.save(account);
+    } else {
+      throw new NotFoundException("No id database update password");
     }
-    throw new NotFoundException("No id database update password");
   }
 
   @Override
-  public Account updateAdminById(Long user_id, AccountRequest accountRequest , String RoleName) {
-    Optional<Account> optionalAccount = accountRepository.findByUser_id(user_id);
-    if(optionalAccount.isPresent()) {
-      Account account = optionalAccount.get();
-      if(accountRequest.getUsername() !=null) {
-        account.setUsername(accountRequest.getUsername());
+  public Account updateAdminById(Long user_id, AccountAdminRequest accountAdminRequest) {
+    Optional<Account> accountOptional = accountRepository.findByUser_id(user_id);
+    Role role = roleRepository.getByRoleName(accountAdminRequest.getRoleName()).get();
+    if(accountOptional.isPresent()) {
+      Account account = accountOptional.get();
+      if(accountAdminRequest.getUsername() !=null) {
+        account.setUsername(accountAdminRequest.getUsername());
       }
-      if(accountRequest.getEmail() !=null) {
-        account.setEmail(accountRequest.getEmail());
+      if(accountAdminRequest.getEmail() !=null) {
+        account.setEmail(accountAdminRequest.getEmail());
       }
-      if(accountRequest.getPassword() !=null) {
-        account.setPassword(passwordEncoder.encode(accountRequest.getPassword()));
+      if(accountAdminRequest.getPassword() !=null) {
+        account.setPassword(passwordEncoder.encode(accountAdminRequest.getPassword()));
       }
-      Role role = roleRepository.getByRoleName(RoleName).get();
-      if(role.getRoleName() !=null) {
+      if(accountAdminRequest.getRoleName() !=null) {
         account.setRole(role);
       }
       account.setUpdateTime(LocalDateTime.now());
+
       return accountRepository.save(account);
     }
-    throw new NotFoundException("no id database update admin");
+    throw new NotFoundException("no id update account admin");
+  }
+
+  @Override
+  public Account createAccountAdmin(AccountAdminRequest accountAdminRequest) {
+
+    Role role = roleRepository.getByRoleName(accountAdminRequest.getRoleName()).get();
+
+    Account account = new Account();
+    account.setUsername(accountAdminRequest.getUsername());
+    account.setEmail(accountAdminRequest.getEmail());
+    account.setPassword(passwordEncoder.encode(accountAdminRequest.getPassword()));
+
+    account.setRole(role);
+
+    account.setDateTime(LocalDateTime.now());
+    account.setUpdateTime(LocalDateTime.now());
+
+    try {
+      return accountRepository.save(account);
+    } catch (DataAccessException ex) {
+      throw new InternalServerException("no save database admin");
+    }
+
   }
 }
