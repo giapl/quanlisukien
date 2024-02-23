@@ -3,12 +3,15 @@ package org.example.quanlisukien.service.account;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.example.quanlisukien.data.entity.Account;
 import org.example.quanlisukien.data.entity.Role;
 import org.example.quanlisukien.data.request.AccountAdminRequest;
 import org.example.quanlisukien.data.request.AccountRequest;
+import org.example.quanlisukien.data.response.AccountResponse;
 import org.example.quanlisukien.exception.InternalServerException;
 import org.example.quanlisukien.exception.NotFoundException;
+import org.example.quanlisukien.mapper.IAccountMapper;
 import org.example.quanlisukien.repository.AccountRepository;
 import org.example.quanlisukien.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,17 +29,23 @@ public class AccountServiceImpl implements AccountService {
 
   private final RoleRepository roleRepository;
 
+  private final IAccountMapper iAccountMapper;
+
   @Autowired
   public AccountServiceImpl(AccountRepository accountRepository, PasswordEncoder passwordEncoder,
-      RoleRepository roleRepository) {
+      RoleRepository roleRepository, IAccountMapper iAccountMapper) {
     this.accountRepository = accountRepository;
     this.passwordEncoder = passwordEncoder;
     this.roleRepository = roleRepository;
+    this.iAccountMapper = iAccountMapper;
   }
 
   @Override
-  public List<Account> getByAllAccount() {
-    return accountRepository.findAll();
+  public List<AccountResponse> getByAllAccount() {
+    return accountRepository.findAll()
+        .stream()
+        .map(iAccountMapper::convertEntityAccountMapper)
+        .collect(Collectors.toList());
   }
 
   @Override

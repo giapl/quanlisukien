@@ -5,10 +5,11 @@ import org.example.quanlisukien.data.entity.Account;
 import org.example.quanlisukien.data.entity.Role;
 import org.example.quanlisukien.data.request.AccountAdminRequest;
 import org.example.quanlisukien.data.request.AccountRequest;
+import org.example.quanlisukien.data.response.AccountResponse;
 
 public interface AccountService {
 
-  List<Account> getByAllAccount(); //method xem tat ca danh sach account
+  List<AccountResponse> getByAllAccount(); //method xem tat ca danh sach account
 
   Account getByIdAccount(Long user_id); //method tim kiem bang id
 

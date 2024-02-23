@@ -9,5 +9,5 @@ import org.mapstruct.Mapping;
 public interface ICategoriesMapper {
 
   @Mapping(source = "category_id" , target = "category_id")
-  CategoriesResponse convertEntityCategoriesMapper(Categories categories);
+  CategoriesResponse convertEntityCategoriesMapper(Categories categories); // convert categories sang categoriesResponse
 }

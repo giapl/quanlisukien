@@ -11,5 +11,5 @@ import org.springframework.stereotype.Repository;
 public interface RoleRepository extends JpaRepository<Role, Long> {
 
   @Query(value = "select * from role where role_name =:role_name", nativeQuery = true)
-  Optional<Role> getByRoleName(@Param("role_name") String RoleName);
+  Optional<Role> getByRoleName(@Param("role_name") String RoleName); //lay ra theo dk role_name
 }

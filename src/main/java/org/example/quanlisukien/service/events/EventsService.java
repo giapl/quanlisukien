@@ -9,6 +9,6 @@ public interface EventsService {
 
   Events createEvent(EventRequest eventRequest); //method tao 1 event moi do admin
 
-  List<EventsResponse> findAll();
+  List<EventsResponse> findAll(); //method hien thi danh sach events
 
 }

@@ -1,5 +1,7 @@
 package org.example.quanlisukien.data.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,7 +13,15 @@ import lombok.NoArgsConstructor;
 @Builder
 public class AccountResponse {
 
+  private String user_id;
   private String username;
   private String email;
   private String password;
+  private String roleName;
+
+  @JsonFormat(pattern = "yyyy:MM:DD hh:mm:ss")
+  private LocalDateTime dateTime;
+
+  @JsonFormat(pattern = "yyyy:MM:DD hh:mm:ss")
+  private LocalDateTime updateTime;
 }

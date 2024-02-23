@@ -13,6 +13,6 @@ public interface RoleService {
 
   void deleteByIdRole(Long role_id); //method xoa role
 
-  Role updateByIdRole(Long role_id, RoleRequest roleRequest);
+  Role updateByIdRole(Long role_id, RoleRequest roleRequest); //method update role cho admin qua id
 
 }

@@ -10,5 +10,5 @@ public interface IRoleMapper {
 
 
   @Mapping(source = "roleName", target = "RoleName")
-  RoleResponse covertRoleMapper(Role roles);
+  RoleResponse covertRoleMapper(Role roles); //convert role sang roleResponse
 }

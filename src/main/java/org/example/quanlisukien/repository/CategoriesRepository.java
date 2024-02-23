@@ -11,5 +11,5 @@ import org.springframework.stereotype.Repository;
 public interface CategoriesRepository extends JpaRepository<Categories,Long> {
 
   @Query(value = "select * from categories where name = :name",nativeQuery = true)
-  Optional<Categories> findByName(@Param("name") String name);
+  Optional<Categories> findByName(@Param("name") String name); //lay ra theo dk name
 }
