@@ -77,6 +77,9 @@ public class SecurityConfig {
                 new AntPathRequestMatcher("/api/v1/categories/delete", HttpMethod.DELETE.name()))
             .hasAuthority("ADMIN")
             .requestMatchers(
+                new AntPathRequestMatcher("/api/v1/categories/update", HttpMethod.PUT.name()))
+            .hasAuthority("ADMIN")
+            .requestMatchers(
                 new AntPathRequestMatcher("/api/v1/accounts/create/admin", HttpMethod.POST.name()))
             .hasAuthority("ADMIN")
             .requestMatchers(
@@ -84,6 +87,12 @@ public class SecurityConfig {
             .hasAuthority("ADMIN")
             .requestMatchers(new AntPathRequestMatcher("/api/v1/events/all", HttpMethod.GET.name()))
             .hasAnyAuthority("ADMIN", "USER")
+            .requestMatchers(
+                new AntPathRequestMatcher("/api/v1/events/delete", HttpMethod.DELETE.name()))
+            .hasAuthority("ADMIN")
+            .requestMatchers(
+                new AntPathRequestMatcher("/api/v1/events/update", HttpMethod.PUT.name()))
+            .hasAuthority("ADMIN")
             .anyRequest()
             .denyAll())
         .httpBasic(Customizer.withDefaults());

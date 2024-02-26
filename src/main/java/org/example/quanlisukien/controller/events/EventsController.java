@@ -1,13 +1,17 @@
 package org.example.quanlisukien.controller.events;
 
+import org.example.quanlisukien.data.request.EventAdminRequest;
 import org.example.quanlisukien.data.request.EventRequest;
 import org.example.quanlisukien.service.events.EventsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -31,4 +35,16 @@ public class EventsController {
     return ResponseEntity.ok(eventsService.findAll());
   }
 
+  @DeleteMapping("/delete")
+  public ResponseEntity<?> deleteByIdEvent(@RequestParam Long event_id) {
+    eventsService.deleteByIdEvent(event_id);
+    return ResponseEntity.ok("delete event id successful");
+  }
+
+  @PutMapping("/update")
+  public ResponseEntity<?> updateByIdEvents(@RequestParam Long event_id ,@RequestBody
+      EventAdminRequest eventAdminRequest) {
+    eventsService.updateByIdEvents(event_id, eventAdminRequest);
+    return ResponseEntity.ok("update event successful admin");
+  }
 }

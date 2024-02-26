@@ -85,7 +85,6 @@ public class AccountServiceImpl implements AccountService {
   @Override
   public Account updateAdminById(Long user_id, AccountAdminRequest accountAdminRequest) {
     Optional<Account> accountOptional = accountRepository.findByUser_id(user_id);
-    Role role = roleRepository.getByRoleName(accountAdminRequest.getRoleName()).get();
     if(accountOptional.isPresent()) {
       Account account = accountOptional.get();
       if(accountAdminRequest.getUsername() !=null) {
@@ -98,6 +97,7 @@ public class AccountServiceImpl implements AccountService {
         account.setPassword(passwordEncoder.encode(accountAdminRequest.getPassword()));
       }
       if(accountAdminRequest.getRoleName() !=null) {
+        Role role = roleRepository.getByRoleName(accountAdminRequest.getRoleName()).get();
         account.setRole(role);
       }
       account.setUpdateTime(LocalDateTime.now());
