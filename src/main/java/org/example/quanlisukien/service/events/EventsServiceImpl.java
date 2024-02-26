@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 import org.example.quanlisukien.data.entity.Categories;
 import org.example.quanlisukien.data.entity.Events;
 import org.example.quanlisukien.data.entity.Locations;
-import org.example.quanlisukien.data.request.EventAdminRequest;
 import org.example.quanlisukien.data.request.EventRequest;
 import org.example.quanlisukien.data.response.EventsResponse;
 import org.example.quanlisukien.exception.InternalServerException;
@@ -98,33 +97,52 @@ public class EventsServiceImpl implements EventsService {
   }
 
   @Override
-  public Events updateByIdEvents(Long event_id, EventAdminRequest eventAdminRequest) {
+  public Events updateByIdEvents(Long event_id, EventRequest eventRequest) {
     Optional<Events> optionalEvents = eventsRepository.findById(event_id);
     if (optionalEvents.isPresent()) {
       Events events = optionalEvents.get();
-      if (eventAdminRequest.getName_event() != null) {
-        events.setName_event(eventAdminRequest.getName_event());
+      if (eventRequest.getName_event() != null) {
+        events.setName_event(eventRequest.getName_event());
       }
-      if (eventAdminRequest.getDescription_event() != null) {
-        events.setDescription(eventAdminRequest.getDescription_event());
+      if (eventRequest.getDescription_event() != null) {
+        events.setDescription(eventRequest.getDescription_event());
       }
-      if (eventAdminRequest.getEvent_image() != null) {
-        events.setEvent_image(eventAdminRequest.getEvent_image());
+      if (eventRequest.getEvent_image() != null) {
+        events.setEvent_image(eventRequest.getEvent_image());
       }
 
-      if (eventAdminRequest.getName_category() != null) {
+      if (eventRequest.getName_category() != null) {
         Categories categories = categoriesRepository.findByName(
-                eventAdminRequest.getName_category())
+                eventRequest.getName_category()) //tim kiem ten danh muc lay ra
             .get();
-        events.setCategories(categories);
+        events.setCategories(categories); // set vao event
       }
 
-      if (eventAdminRequest.getStart_time() != null) {
-        events.setStart_time(eventAdminRequest.getStart_time());
+      Locations locations = events.getLocations(); //lay ra locations
+      if (eventRequest.getName_location() != null) { // kiem tra xem co nhap gi de update hay ko
+        locations.setName(eventRequest.getName_location()); //set name location ben locations
+        events.setLocations(locations); //set locations ben events
       }
 
-      if (eventAdminRequest.getEnd_time() != null) {
-        events.setEnd_time(eventAdminRequest.getEnd_time());
+      if (eventRequest.getDescription_address() != null) {
+        locations.setDescription(
+            eventRequest.getDescription_address()); //set description ben locations
+        events.setLocations(locations); //set locations ben events
+      }
+
+      if (eventRequest.getAddress() != null) {
+        locations.setAddress(eventRequest.getAddress()); // set address ben locations
+        events.setLocations(locations); //set locations ben events
+      }
+
+      locationsRepository.save(locations); // luu du lieu update location ben locations
+
+      if (eventRequest.getStart_time() != null) {
+        events.setStart_time(eventRequest.getStart_time());
+      }
+
+      if (eventRequest.getEnd_time() != null) {
+        events.setEnd_time(eventRequest.getEnd_time());
       }
       events.setUpdateTime(LocalDateTime.now());
       return eventsRepository.save(events);

@@ -1,6 +1,5 @@
 package org.example.quanlisukien.controller.events;
 
-import org.example.quanlisukien.data.request.EventAdminRequest;
 import org.example.quanlisukien.data.request.EventRequest;
 import org.example.quanlisukien.service.events.EventsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,8 +42,8 @@ public class EventsController {
 
   @PutMapping("/update")
   public ResponseEntity<?> updateByIdEvents(@RequestParam Long event_id ,@RequestBody
-      EventAdminRequest eventAdminRequest) {
-    eventsService.updateByIdEvents(event_id, eventAdminRequest);
+      EventRequest eventRequest) {
+    eventsService.updateByIdEvents(event_id, eventRequest);
     return ResponseEntity.ok("update event successful admin");
   }
 }
