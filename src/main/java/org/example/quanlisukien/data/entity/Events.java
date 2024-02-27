@@ -59,6 +59,7 @@ public class Events {
   private List<Feedbacks> feedbacks;
 
   //lien ket den dia chi to chuc su kien
+  @JsonBackReference
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "location_id")
   private Locations locations;

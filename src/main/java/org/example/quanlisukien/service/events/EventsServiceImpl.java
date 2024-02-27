@@ -32,6 +32,7 @@ public class EventsServiceImpl implements EventsService {
 
   private final IEventsMapper iEventsMapper;
 
+
   public EventsServiceImpl(CategoriesRepository categoriesRepository,
       EventsRepository eventsRepository, LocationsRepository locationsRepository,
       IEventsMapper iEventsMapper) {
@@ -150,4 +151,15 @@ public class EventsServiceImpl implements EventsService {
       throw new NotFoundException("no id event update admin");
     }
   }
+
+  @Override
+  public List<EventsResponse> getByCategoryName(String name_category) {
+    List<EventsResponse> events = eventsRepository.findByCategories(name_category);
+    if(!events.isEmpty()) {
+     return events;
+    } else {
+      throw new NotFoundException("no category");
+    }
+  }
+
 }

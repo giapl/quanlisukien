@@ -13,4 +13,5 @@ public interface IEventsMapper {
   @Mapping(source = "locations.address", target = "address")
   @Mapping(source = "locations.description", target = "description_address")
   EventsResponse convertEntityEventsMapper(Events events); // convert events sang eventsResponse
+
 }

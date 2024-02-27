@@ -14,4 +14,7 @@ public interface EventsService {
   void deleteByIdEvent(Long event_id); //method xoa event bang id
 
   Events updateByIdEvents(Long event_id , EventRequest eventRequest); // method update event bang id
+
+  List<EventsResponse> getByCategoryName (String name_category); //method tim kiem bang danh muc
+
 }

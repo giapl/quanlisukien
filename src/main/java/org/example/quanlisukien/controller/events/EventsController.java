@@ -1,6 +1,7 @@
 package org.example.quanlisukien.controller.events;
 
 import org.example.quanlisukien.data.request.EventRequest;
+import org.example.quanlisukien.data.response.EventsResponse;
 import org.example.quanlisukien.service.events.EventsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -45,5 +46,9 @@ public class EventsController {
       EventRequest eventRequest) {
     eventsService.updateByIdEvents(event_id, eventRequest);
     return ResponseEntity.ok("update event successful admin");
+  }
+  @GetMapping("/search/nameCategory")
+  public ResponseEntity<?> getByCategoryName (@RequestParam String name_category) {
+    return ResponseEntity.ok(eventsService.getByCategoryName(name_category));
   }
 }
