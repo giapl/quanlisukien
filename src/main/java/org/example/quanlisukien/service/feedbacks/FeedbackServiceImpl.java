@@ -14,8 +14,10 @@ import org.example.quanlisukien.repository.FeedbacksRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class FeedbackServiceImpl implements FeedbackService {
 
   private final FeedbacksRepository feedbacksRepository;
@@ -34,7 +36,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 
   @Override
   public Feedbacks createFeedback(FeedbackRequest feedbackRequest) {
-    Optional<Account> account = accountRepository.findById(feedbackRequest.getEvent_id());
+    Optional<Account> account = accountRepository.findById(feedbackRequest.getUser_id());
     Optional<Events> events = eventsRepository.findById(feedbackRequest.getEvent_id());
     if (account.isPresent() && events.isPresent()) {
       Account account1 = account.get();
@@ -64,16 +66,23 @@ public class FeedbackServiceImpl implements FeedbackService {
     Optional<Feedbacks> feedbacksOptional = feedbacksRepository.findById(feedback_id);
     if (feedbacksOptional.isPresent()) {
       Feedbacks feedbacks = feedbacksOptional.get();
-      if (feedbackRequest.getFeedback_content() != null) {
-        feedbacks.setFeedback_content(feedbackRequest.getFeedback_content());
+
+      //check user_id va event_id co quyen sua feedback hay ko
+      if (feedbacks.getEvents().getEvent_id().equals(feedbackRequest.getEvent_id())
+          && feedbacks.getAccount().getUser_id().equals(feedbackRequest.getUser_id())) {
+
+        if (feedbackRequest.getFeedback_content() != null) {
+          feedbacks.setFeedback_content(feedbackRequest.getFeedback_content());
+        }
+
+        if (feedbackRequest.getFeedback_image() != null) {
+          feedbacks.setFeedback_image(feedbackRequest.getFeedback_image());
+        }
+
+        feedbacks.setUpdateTime(LocalDateTime.now());
+        return feedbacksRepository.save(feedbacks);
       }
-      if (feedbackRequest.getFeedback_image() != null) {
-        feedbacks.setFeedback_image(feedbackRequest.getFeedback_image());
-      }
-      feedbacks.setUpdateTime(LocalDateTime.now());
-      return feedbacksRepository.save(feedbacks);
-    } else {
-      throw new NotFoundException("no feedback_id");
     }
+    throw new NotFoundException("no update feedback");
   }
 }

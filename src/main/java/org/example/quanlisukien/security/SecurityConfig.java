@@ -100,7 +100,10 @@ public class SecurityConfig {
                 HttpMethod.GET.name())).hasAnyAuthority("USER", "ADMIN")
             .requestMatchers(
                 new AntPathRequestMatcher("/api/v1/events/search/id", HttpMethod.GET.name()))
-            .hasAnyAuthority("ADMIN","USER")
+            .hasAnyAuthority("ADMIN", "USER")
+            .requestMatchers(
+                new AntPathRequestMatcher("/api/v1/feedbacks/update", HttpMethod.PUT.name()))
+            .hasAnyAuthority("ADMIN", "USER")
             .anyRequest()
             .denyAll())
         .httpBasic(Customizer.withDefaults());
