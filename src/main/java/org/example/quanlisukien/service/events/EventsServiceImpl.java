@@ -7,15 +7,21 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import org.example.quanlisukien.data.entity.Categories;
 import org.example.quanlisukien.data.entity.Events;
+import org.example.quanlisukien.data.entity.Feedbacks;
 import org.example.quanlisukien.data.entity.Locations;
 import org.example.quanlisukien.data.request.EventRequest;
+import org.example.quanlisukien.data.response.EventGetIdResponse;
 import org.example.quanlisukien.data.response.EventsResponse;
+import org.example.quanlisukien.data.response.FeedbackResponse;
 import org.example.quanlisukien.exception.InternalServerException;
 import org.example.quanlisukien.exception.NotFoundException;
 import org.example.quanlisukien.mapper.IEventsMapper;
+import org.example.quanlisukien.mapper.IFeedbackMapper;
 import org.example.quanlisukien.repository.CategoriesRepository;
 import org.example.quanlisukien.repository.EventsRepository;
+import org.example.quanlisukien.repository.FeedbacksRepository;
 import org.example.quanlisukien.repository.LocationsRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,14 +38,22 @@ public class EventsServiceImpl implements EventsService {
 
   private final IEventsMapper iEventsMapper;
 
+  private final FeedbacksRepository feedbacksRepository;
 
+  private final IFeedbackMapper feedbackMapper;
+
+
+  @Autowired
   public EventsServiceImpl(CategoriesRepository categoriesRepository,
       EventsRepository eventsRepository, LocationsRepository locationsRepository,
-      IEventsMapper iEventsMapper) {
+      IEventsMapper iEventsMapper, FeedbacksRepository feedbacksRepository,
+      IFeedbackMapper feedbackMapper) {
     this.categoriesRepository = categoriesRepository;
     this.eventsRepository = eventsRepository;
     this.locationsRepository = locationsRepository;
     this.iEventsMapper = iEventsMapper;
+    this.feedbacksRepository = feedbacksRepository;
+    this.feedbackMapper = feedbackMapper;
   }
 
   @Override
@@ -155,10 +169,28 @@ public class EventsServiceImpl implements EventsService {
   @Override
   public List<EventsResponse> getByCategoryName(String name_category) {
     List<EventsResponse> events = eventsRepository.findByCategories(name_category);
-    if(!events.isEmpty()) {
-     return events;
+    if (!events.isEmpty()) {
+      return events;
     } else {
       throw new NotFoundException("no category");
+    }
+  }
+
+  @Override
+  public EventGetIdResponse getById(Long id) {
+    Optional<Events> optionalEvents = eventsRepository.findById(id);
+
+    List<Feedbacks> feedbacks = feedbacksRepository.findByEventsEvent_id(id);
+
+    List<FeedbackResponse> feedbackResponses = feedbackMapper.convertFeedbackMapper(feedbacks);
+
+    if (optionalEvents.isPresent()) {
+      EventGetIdResponse eventGetIdResponse = iEventsMapper.convertEventMapper(
+          optionalEvents.get());
+      eventGetIdResponse.setFeedback(feedbackResponses);
+      return eventGetIdResponse;
+    } else {
+      throw new NotFoundException("no id");
     }
   }
 

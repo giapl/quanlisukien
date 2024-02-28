@@ -51,4 +51,8 @@ public class EventsController {
   public ResponseEntity<?> getByCategoryName (@RequestParam String name_category) {
     return ResponseEntity.ok(eventsService.getByCategoryName(name_category));
   }
+  @GetMapping("/search/id")
+  public ResponseEntity<?> getById(@RequestParam Long id) {
+    return ResponseEntity.ok(eventsService.getById(id));
+  }
 }

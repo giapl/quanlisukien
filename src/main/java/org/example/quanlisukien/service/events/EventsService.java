@@ -3,6 +3,7 @@ package org.example.quanlisukien.service.events;
 import java.util.List;
 import org.example.quanlisukien.data.entity.Events;
 import org.example.quanlisukien.data.request.EventRequest;
+import org.example.quanlisukien.data.response.EventGetIdResponse;
 import org.example.quanlisukien.data.response.EventsResponse;
 
 public interface EventsService {
@@ -16,5 +17,7 @@ public interface EventsService {
   Events updateByIdEvents(Long event_id , EventRequest eventRequest); // method update event bang id
 
   List<EventsResponse> getByCategoryName (String name_category); //method tim kiem bang danh muc
+
+  EventGetIdResponse getById(Long id); // method tim kiem event bang id;
 
 }

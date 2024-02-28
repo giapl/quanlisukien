@@ -33,6 +33,9 @@ public class Feedbacks {
   @Column(name = "feedback_image")
   private String feedback_image;
 
+  @Column(name = "username")
+  private String username;
+
   @Column(name = "create_at")
   private LocalDateTime dateTime;
   @Column(name = "update_at")

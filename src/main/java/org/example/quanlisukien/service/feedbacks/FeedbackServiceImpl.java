@@ -47,6 +47,8 @@ public class FeedbackServiceImpl implements FeedbackService {
       feedbacks.setEvents(events1);
       feedbacks.setDateTime(LocalDateTime.now());
       feedbacks.setUpdateTime(LocalDateTime.now());
+
+      feedbacks.setUsername(account1.getUsername());
       try {
         return feedbacksRepository.save(feedbacks);
       } catch (DataAccessException ex) {
