@@ -4,6 +4,7 @@ import org.example.quanlisukien.data.request.EventRequest;
 import org.example.quanlisukien.data.response.EventsResponse;
 import org.example.quanlisukien.service.events.EventsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,11 +31,6 @@ public class EventsController {
     return ResponseEntity.ok(eventsService.createEvent(eventRequest));
   }
 
-  @GetMapping("/all")
-  public ResponseEntity<?> findAll() {
-    return ResponseEntity.ok(eventsService.findAll());
-  }
-
   @DeleteMapping("/delete")
   public ResponseEntity<?> deleteByIdEvent(@RequestParam Long event_id) {
     eventsService.deleteByIdEvent(event_id);
@@ -42,17 +38,19 @@ public class EventsController {
   }
 
   @PutMapping("/update")
-  public ResponseEntity<?> updateByIdEvents(@RequestParam Long event_id ,@RequestBody
-      EventRequest eventRequest) {
+  public ResponseEntity<?> updateByIdEvents(@RequestParam Long event_id, @RequestBody
+  EventRequest eventRequest) {
     eventsService.updateByIdEvents(event_id, eventRequest);
     return ResponseEntity.ok("update event successful admin");
   }
-  @GetMapping("/search/nameCategory")
-  public ResponseEntity<?> getByCategoryName (@RequestParam String name_category) {
-    return ResponseEntity.ok(eventsService.getByCategoryName(name_category));
-  }
+
   @GetMapping("/search/id")
   public ResponseEntity<?> getById(@RequestParam Long id) {
     return ResponseEntity.ok(eventsService.getById(id));
+  }
+
+  @GetMapping("/all")
+  public ResponseEntity<?> getAll(Pageable pageable) {
+    return ResponseEntity.ok(eventsService.getAll(pageable));
   }
 }

@@ -23,6 +23,8 @@ import org.example.quanlisukien.repository.FeedbacksRepository;
 import org.example.quanlisukien.repository.LocationsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -95,14 +97,6 @@ public class EventsServiceImpl implements EventsService {
   }
 
   @Override
-  public List<EventsResponse> findAll() {
-    return eventsRepository.findAll()
-        .stream()
-        .map(iEventsMapper::convertEntityEventsMapper)
-        .collect(Collectors.toList());
-  }
-
-  @Override
   public void deleteByIdEvent(Long event_id) {
     if (eventsRepository.existsById(event_id)) { //kiem tra xem id co ton tai ko
       eventsRepository.deleteById(event_id);
@@ -166,15 +160,6 @@ public class EventsServiceImpl implements EventsService {
     }
   }
 
-  @Override
-  public List<EventsResponse> getByCategoryName(String name_category) {
-    List<EventsResponse> events = eventsRepository.findByCategories(name_category);
-    if (!events.isEmpty()) {
-      return events;
-    } else {
-      throw new NotFoundException("no category");
-    }
-  }
 
   @Override
   public EventGetIdResponse getById(Long id) {
@@ -192,6 +177,17 @@ public class EventsServiceImpl implements EventsService {
     } else {
       throw new NotFoundException("no id");
     }
+  }
+
+  @Override
+  public Page<EventsResponse> getAll(Pageable pageable) {
+    Page<Events> events = eventsRepository.findAll(pageable);
+    Page<EventsResponse> eventsResponses = events.map(events1 -> {
+      EventsResponse eventsResponse = iEventsMapper.convertEntityEventsMapper(events1);
+      eventsResponse.setNumberFeedback((long) events1.getFeedbacks().size());
+      return eventsResponse;
+    });
+    return eventsResponses;
   }
 
 }

@@ -2,6 +2,7 @@ package org.example.quanlisukien.data.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,4 +27,7 @@ public class EventsResponse {
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   private LocalDateTime end_time;
 
+  private Long numberFeedback;
+
+  private List<FeedbackResponse> feedback;
 }
