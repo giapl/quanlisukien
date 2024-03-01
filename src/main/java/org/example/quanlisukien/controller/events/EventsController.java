@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -49,8 +50,12 @@ public class EventsController {
     return ResponseEntity.ok(eventsService.getById(id));
   }
 
-  @GetMapping("/all")
-  public ResponseEntity<?> getAll(Pageable pageable) {
-    return ResponseEntity.ok(eventsService.getAll(pageable));
+  @GetMapping("/all/{ofSize}")
+  public ResponseEntity<?> getAll(@PathVariable int ofSize,Pageable pageable) {
+    return ResponseEntity.ok(eventsService.getAll(ofSize, pageable));
+  }
+  @GetMapping("/search/nameEvent/{ofSize}")
+  public ResponseEntity<?> getByName_event(@PathVariable int ofSize,@RequestParam String name_event,Pageable pageable){
+    return ResponseEntity.ok(eventsService.getByName_event(ofSize, name_event, pageable));
   }
 }

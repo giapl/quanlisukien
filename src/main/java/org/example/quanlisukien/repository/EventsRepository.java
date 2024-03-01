@@ -4,6 +4,8 @@ import org.example.quanlisukien.data.entity.Events;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -11,5 +13,7 @@ public interface EventsRepository extends JpaRepository<Events, Long> {
 
   Page<Events> findAll(Pageable pageable);
 
+  @Query(value = "select * from events where name_event = :name_event",nativeQuery = true)
+  Page<Events> findByName_event(@Param("name_event") String name_event,Pageable pageable);
 
 }

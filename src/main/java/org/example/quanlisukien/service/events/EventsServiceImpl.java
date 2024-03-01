@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import org.example.quanlisukien.data.entity.Categories;
 import org.example.quanlisukien.data.entity.Events;
 import org.example.quanlisukien.data.entity.Feedbacks;
@@ -24,7 +23,9 @@ import org.example.quanlisukien.repository.LocationsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -180,11 +181,29 @@ public class EventsServiceImpl implements EventsService {
   }
 
   @Override
-  public Page<EventsResponse> getAll(Pageable pageable) {
-    Page<Events> events = eventsRepository.findAll(pageable);
+  public Page<EventsResponse> getAll(int ofSize, Pageable pageable) {
+    PageRequest pageRequest = PageRequest.of(ofSize, 10)
+        .withSort(Sort.by("dateTime")
+            .descending()); //trang bat dau vaf co dinh 5 ban ghi moi trang vaf sap xep giam dan
+    Page<Events> events = eventsRepository.findAll(pageRequest);
     Page<EventsResponse> eventsResponses = events.map(events1 -> {
       EventsResponse eventsResponse = iEventsMapper.convertEntityEventsMapper(events1);
-      eventsResponse.setNumberFeedback((long) events1.getFeedbacks().size());
+      eventsResponse.setNumberFeedback(
+          (long) events1.getFeedbacks().size()); // map lai vs set number
+      return eventsResponse;
+    });
+    return eventsResponses;
+  }
+
+  @Override
+  public Page<EventsResponse> getByName_event(int ofSize, String name_event, Pageable pageable) {
+    Page<Events> events = eventsRepository.findByName_event(name_event,
+        PageRequest.of(ofSize, 5)
+            .withSort(Sort.by("event_id")
+                .descending())); //tim  name_event vs moi trang 5 ban ghi vs sap xe theo giam dan event_id
+    Page<EventsResponse> eventsResponses = events.map(events1 -> {
+      EventsResponse eventsResponse = iEventsMapper.convertEntityEventsMapper(events1);
+      eventsResponse.setNumberFeedback((long) events1.getFeedbacks().size()); //map lai va setNumber
       return eventsResponse;
     });
     return eventsResponses;
