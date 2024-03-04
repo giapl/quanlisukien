@@ -20,7 +20,9 @@ public interface EventsService {
 
   Page<EventsResponse> getAll(int ofSize, Pageable pageable); //method hien thi event phan trang
 
-  Page<EventsResponse> getByName_event(int ofSize,String name_event,
+  Page<EventsResponse> getByName_event(int ofSize, String name_event,
       Pageable pageable); //tim kiem event theo ten event
 
+  Page<EventsResponse> getByCategoryName(int offSize, String name_category,
+      Pageable pageable); //method getBy name_category lay ra event
 }

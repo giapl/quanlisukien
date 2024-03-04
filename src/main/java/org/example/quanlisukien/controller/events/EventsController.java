@@ -58,4 +58,8 @@ public class EventsController {
   public ResponseEntity<?> getByName_event(@PathVariable int ofSize,@RequestParam String name_event,Pageable pageable){
     return ResponseEntity.ok(eventsService.getByName_event(ofSize, name_event, pageable));
   }
+  @GetMapping("/search/{offSize}/{name_category}")
+  public ResponseEntity<?> getByCategoryName(@PathVariable int offSize ,@PathVariable String name_category, Pageable pageable) {
+    return ResponseEntity.ok(eventsService.getByCategoryName(offSize, name_category, pageable));
+  }
 }

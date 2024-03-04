@@ -209,4 +209,17 @@ public class EventsServiceImpl implements EventsService {
     return eventsResponses;
   }
 
+  @Override
+  public Page<EventsResponse> getByCategoryName(int offSize, String name_category,
+      Pageable pageable) {
+    Page<Events> events = eventsRepository.findAllByCategories(name_category,
+        PageRequest.of(offSize, 5));
+    Page<EventsResponse> eventsResponses = events.map(events1 -> {
+      EventsResponse eventsResponse = iEventsMapper.convertEntityEventsMapper(events1);
+      eventsResponse.setNumberFeedback((long) events1.getFeedbacks().size()); //map lai va setNumber
+      return eventsResponse;
+    });
+    return eventsResponses;
+  }
+
 }
