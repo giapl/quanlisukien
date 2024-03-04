@@ -4,6 +4,7 @@ package org.example.quanlisukien.service.events;
 import org.example.quanlisukien.data.entity.Events;
 import org.example.quanlisukien.data.request.EventRequest;
 import org.example.quanlisukien.data.response.EventGetIdResponse;
+import org.example.quanlisukien.data.response.EventRegistrationResponse;
 import org.example.quanlisukien.data.response.EventsResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,4 +26,7 @@ public interface EventsService {
 
   Page<EventsResponse> getByCategoryName(int offSize, String name_category,
       Pageable pageable); //method getBy name_category lay ra event
+
+  Page<EventRegistrationResponse> getAllEventRegistration(int offSize,
+      Pageable pageable); //method admin getAll event and feedback and registrations
 }

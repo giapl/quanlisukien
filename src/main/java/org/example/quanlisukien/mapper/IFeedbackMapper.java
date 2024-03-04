@@ -10,7 +10,7 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface IFeedbackMapper {
 
-  @Mapping(source = "feedback_id",target = "feedback_id")
+  @Mapping(source = "feedbacks.feedback_id",target = "feedback_id")
   FeedbackResponse map(Feedbacks feedbacks); //map 1 feedbacks sang feedbackResponse
 
   @Mapping(source = "account.username" , target = "username")

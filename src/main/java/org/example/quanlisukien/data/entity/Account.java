@@ -36,7 +36,7 @@ public class Account implements UserDetails {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "userId")
+  @Column(name = "user_id")
   private Long user_id;
   @Column(name = "username")
   private String username;
@@ -46,11 +46,11 @@ public class Account implements UserDetails {
   private String password;
 
   @JsonFormat(pattern = "yyyy:MM:DD hh:mm:ss")
-  @Column(name = "createAt")
+  @Column(name = "create_at")
   private LocalDateTime dateTime;
 
   @JsonFormat(pattern = "yyyy:MM:DD hh:mm:ss")
-  @Column(name = "updateAt")
+  @Column(name = "update_at")
   private LocalDateTime updateTime;
 
   @JsonBackReference
@@ -61,6 +61,11 @@ public class Account implements UserDetails {
   @JsonManagedReference
   @OneToMany(mappedBy = "account",cascade = CascadeType.ALL,orphanRemoval = true)
   private List<Feedbacks> feedbacks;
+
+  //lien ket voi dang ki su kien
+  @JsonManagedReference
+  @OneToMany(mappedBy = "account",orphanRemoval = true,cascade = CascadeType.ALL)
+  private List<Registrations> registrations;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -85,4 +85,14 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
     throw new NotFoundException("no update feedback");
   }
+
+  @Override
+  public void deleteFeedback(Long feedback_id) {
+
+    if(feedbacksRepository.existsById(feedback_id)) {
+      feedbacksRepository.deleteById(feedback_id);
+    } else {
+      throw new NotFoundException("no id delete feedback");
+    }
+  }
 }

@@ -9,4 +9,5 @@ public interface FeedbackService {
 
   Feedbacks updateFeedback(Long feedback_id,FeedbackRequest feedbackRequest); //method update feedbacks
 
+  void deleteFeedback (Long feedback_id); //method xoa 1 feedback
 }

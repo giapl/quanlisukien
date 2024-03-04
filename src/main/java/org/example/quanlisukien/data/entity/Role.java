@@ -26,17 +26,17 @@ public class Role {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "roleId")
+  @Column(name = "role_id")
   private Long role_id;
-  @Column(name = "roleName")
+  @Column(name = "role_name")
   private String roleName;
 
 
-  @Column(name = "createAt")
+  @Column(name = "create_at")
   private LocalDateTime dateTime;
 
 
-  @Column(name = "UpdateAt")
+  @Column(name = "Update_at")
   private LocalDateTime updateTime;
 
   @JsonManagedReference

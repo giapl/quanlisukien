@@ -8,7 +8,7 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface IAccountMapper {
 
-  @Mapping(source = "user_id",target = "user_id")
+  @Mapping(source = "account.user_id",target = "user_id")
   @Mapping(source = "role.roleName",target = "roleName")
   AccountResponse convertEntityAccountMapper(Account account); // convert account sang account accountResponse
 }

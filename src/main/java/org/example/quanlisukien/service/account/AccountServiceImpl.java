@@ -49,15 +49,31 @@ public class AccountServiceImpl implements AccountService {
   }
 
   @Override
-  public Account getByIdAccount(Long user_id) {
-    return accountRepository.findById(user_id)
-        .orElseThrow(() -> new NotFoundException("no id database:" + user_id));
+  public AccountResponse getByIdAccount(Long user_id) {
+    Optional<Account> account = accountRepository.findById(user_id);
+
+    if (account.isPresent()) {
+      Account account1 = account.get();
+      AccountResponse accountResponse = iAccountMapper.convertEntityAccountMapper(account1);
+      return accountResponse;
+    } else {
+      throw new NotFoundException("no id account");
+    }
   }
 
   @Override
-  public Account getByUsernameAccount(String username) {
-    return accountRepository.findByUsername(username)
-        .orElseThrow(() -> new NotFoundException("no username database: " + username));
+  public AccountResponse getByUsernameAccount(String username) {
+    Optional<Account> account = accountRepository.findByUsername(username);
+
+    if (account.isPresent()) {
+      Account account1 = account.get();
+
+      AccountResponse accountResponse = iAccountMapper.convertEntityAccountMapper(account1);
+      return accountResponse;
+    } else {
+      throw new NotFoundException("no username account");
+    }
+
   }
 
   @Override
@@ -85,18 +101,18 @@ public class AccountServiceImpl implements AccountService {
   @Override
   public Account updateAdminById(Long user_id, AccountAdminRequest accountAdminRequest) {
     Optional<Account> accountOptional = accountRepository.findByUser_id(user_id);
-    if(accountOptional.isPresent()) {
+    if (accountOptional.isPresent()) {
       Account account = accountOptional.get();
-      if(accountAdminRequest.getUsername() !=null) {
+      if (accountAdminRequest.getUsername() != null) {
         account.setUsername(accountAdminRequest.getUsername());
       }
-      if(accountAdminRequest.getEmail() !=null) {
+      if (accountAdminRequest.getEmail() != null) {
         account.setEmail(accountAdminRequest.getEmail());
       }
-      if(accountAdminRequest.getPassword() !=null) {
+      if (accountAdminRequest.getPassword() != null) {
         account.setPassword(passwordEncoder.encode(accountAdminRequest.getPassword()));
       }
-      if(accountAdminRequest.getRoleName() !=null) {
+      if (accountAdminRequest.getRoleName() != null) {
         Role role = roleRepository.getByRoleName(accountAdminRequest.getRoleName()).get();
         account.setRole(role);
       }

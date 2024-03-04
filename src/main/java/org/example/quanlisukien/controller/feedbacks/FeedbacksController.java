@@ -4,6 +4,8 @@ import org.example.quanlisukien.data.request.FeedbackRequest;
 import org.example.quanlisukien.service.feedbacks.FeedbackService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,5 +32,10 @@ public class FeedbacksController {
   @PutMapping("/update")
   public ResponseEntity<?> updateFeedback(@RequestParam Long feedback_id, @RequestBody FeedbackRequest feedbackRequest) {
     return ResponseEntity.ok(feedbackService.updateFeedback(feedback_id, feedbackRequest));
+  }
+  @DeleteMapping("/delete/{feedback_id}")
+  public ResponseEntity<?> deleteFeedback(@PathVariable Long feedback_id) {
+    feedbackService.deleteFeedback(feedback_id);
+    return ResponseEntity.ok("delete by id successful");
   }
 }

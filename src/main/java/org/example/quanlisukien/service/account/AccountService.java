@@ -2,7 +2,6 @@ package org.example.quanlisukien.service.account;
 
 import java.util.List;
 import org.example.quanlisukien.data.entity.Account;
-import org.example.quanlisukien.data.entity.Role;
 import org.example.quanlisukien.data.request.AccountAdminRequest;
 import org.example.quanlisukien.data.request.AccountRequest;
 import org.example.quanlisukien.data.response.AccountResponse;
@@ -11,9 +10,9 @@ public interface AccountService {
 
   List<AccountResponse> getByAllAccount(); //method xem tat ca danh sach account
 
-  Account getByIdAccount(Long user_id); //method tim kiem bang id
+  AccountResponse getByIdAccount(Long user_id); //method tim kiem bang id
 
-  Account getByUsernameAccount(String username); //method tim kiem username
+  AccountResponse getByUsernameAccount(String username); //method tim kiem username
 
    void deleteByIdAccount(Long user_id); //method xoa account
 

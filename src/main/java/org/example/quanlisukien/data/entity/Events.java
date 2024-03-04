@@ -69,4 +69,9 @@ public class Events {
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "category_id")
   private Categories categories;
+
+  //lien ket voi dang ky su kien
+  @JsonManagedReference
+  @OneToMany(mappedBy = "events",orphanRemoval = true,cascade = CascadeType.ALL)
+  private List<Registrations> registrations;
 }

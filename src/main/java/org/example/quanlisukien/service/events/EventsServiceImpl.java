@@ -10,6 +10,7 @@ import org.example.quanlisukien.data.entity.Feedbacks;
 import org.example.quanlisukien.data.entity.Locations;
 import org.example.quanlisukien.data.request.EventRequest;
 import org.example.quanlisukien.data.response.EventGetIdResponse;
+import org.example.quanlisukien.data.response.EventRegistrationResponse;
 import org.example.quanlisukien.data.response.EventsResponse;
 import org.example.quanlisukien.data.response.FeedbackResponse;
 import org.example.quanlisukien.exception.InternalServerException;
@@ -213,13 +214,26 @@ public class EventsServiceImpl implements EventsService {
   public Page<EventsResponse> getByCategoryName(int offSize, String name_category,
       Pageable pageable) {
     Page<Events> events = eventsRepository.findAllByCategories(name_category,
-        PageRequest.of(offSize, 5));
+        PageRequest.of(offSize, 5).withSort(Sort.by("event_id").descending()));
     Page<EventsResponse> eventsResponses = events.map(events1 -> {
       EventsResponse eventsResponse = iEventsMapper.convertEntityEventsMapper(events1);
       eventsResponse.setNumberFeedback((long) events1.getFeedbacks().size()); //map lai va setNumber
       return eventsResponse;
     });
     return eventsResponses;
+  }
+
+  @Override
+  public Page<EventRegistrationResponse> getAllEventRegistration(int offSize, Pageable pageable) {
+    Page<Events> events = eventsRepository.findAll(
+        PageRequest.of(offSize, 5).withSort(Sort.by("dateTime").descending()));
+    Page<EventRegistrationResponse> eventRegistrationResponses = events.map(events1 -> {
+      EventRegistrationResponse response = iEventsMapper.convertEventRegistrationMapper(events1);
+      response.setNumberFeedback((long) events1.getFeedbacks().size());
+      response.setNumberRegistration((long) events1.getRegistrations().size());
+      return response;
+    });
+    return eventRegistrationResponses;
   }
 
 }
