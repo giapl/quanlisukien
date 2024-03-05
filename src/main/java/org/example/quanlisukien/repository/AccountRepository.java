@@ -19,7 +19,7 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
 
   Boolean existsByEmail(@Param("email") String email); //kiem tra email da ton tai hay ch
 
-  @Query(value = "select * from account where user_id =:user_id",nativeQuery = true)
-  Optional<Account> findByUser_id(@Param("user_id") Long user_id); //lay ra theo dk user_id
+  @Query(value = "select * from account where user_id =:user_id", nativeQuery = true)
+  Optional<Account> findByUserId(@Param("user_id") Long user_id); //lay ra theo dk user_id
 
 }

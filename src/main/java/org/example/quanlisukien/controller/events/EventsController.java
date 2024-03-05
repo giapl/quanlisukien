@@ -1,7 +1,6 @@
 package org.example.quanlisukien.controller.events;
 
 import org.example.quanlisukien.data.request.EventRequest;
-import org.example.quanlisukien.data.response.EventsResponse;
 import org.example.quanlisukien.service.events.EventsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -45,23 +44,23 @@ public class EventsController {
     return ResponseEntity.ok("update event successful admin");
   }
 
-  @GetMapping("/search/id")
-  public ResponseEntity<?> getById(@RequestParam Long id) {
-    return ResponseEntity.ok(eventsService.getById(id));
-  }
-
   @GetMapping("/all/{ofSize}")
-  public ResponseEntity<?> getAll(@PathVariable int ofSize,Pageable pageable) {
+  public ResponseEntity<?> getAll(@PathVariable int ofSize, Pageable pageable) {
     return ResponseEntity.ok(eventsService.getAll(ofSize, pageable));
   }
+
   @GetMapping("/search/nameEvent/{ofSize}")
-  public ResponseEntity<?> getByName_event(@PathVariable int ofSize,@RequestParam String name_event,Pageable pageable){
-    return ResponseEntity.ok(eventsService.getByName_event(ofSize, name_event, pageable));
+  public ResponseEntity<?> getByName_event(@PathVariable int ofSize,
+      @RequestParam String name_event, Pageable pageable) {
+    return ResponseEntity.ok(eventsService.getByNameEvent(ofSize, name_event, pageable));
   }
+
   @GetMapping("/search/{offSize}/{name_category}")
-  public ResponseEntity<?> getByCategoryName(@PathVariable int offSize ,@PathVariable String name_category, Pageable pageable) {
+  public ResponseEntity<?> getByCategoryName(@PathVariable int offSize,
+      @PathVariable String name_category, Pageable pageable) {
     return ResponseEntity.ok(eventsService.getByCategoryName(offSize, name_category, pageable));
   }
+
   @GetMapping("/search/{offSize}/eventRegistrations")
   public ResponseEntity<?> getAllEventRegistration(@PathVariable int offSize, Pageable pageable) {
     return ResponseEntity.ok(eventsService.getAllEventRegistration(offSize, pageable));

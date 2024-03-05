@@ -87,7 +87,7 @@ public class AccountServiceImpl implements AccountService {
 
   @Override
   public Account updateByIdPassword(Long user_id, AccountRequest accountRequest) {
-    Optional<Account> optionalAccount = accountRepository.findByUser_id(user_id);
+    Optional<Account> optionalAccount = accountRepository.findByUserId(user_id);
     if (optionalAccount.isPresent()) {
       Account account = optionalAccount.get();
       account.setPassword(passwordEncoder.encode(accountRequest.getPassword()));
@@ -100,7 +100,7 @@ public class AccountServiceImpl implements AccountService {
 
   @Override
   public Account updateAdminById(Long user_id, AccountAdminRequest accountAdminRequest) {
-    Optional<Account> accountOptional = accountRepository.findByUser_id(user_id);
+    Optional<Account> accountOptional = accountRepository.findByUserId(user_id);
     if (accountOptional.isPresent()) {
       Account account = accountOptional.get();
       if (accountAdminRequest.getUsername() != null) {

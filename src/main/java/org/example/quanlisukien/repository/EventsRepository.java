@@ -14,10 +14,10 @@ public interface EventsRepository extends JpaRepository<Events, Long> {
   Page<Events> findAll(Pageable pageable);
 
   @Query(value = "select * from events where name_event = :name_event", nativeQuery = true)
-  Page<Events> findByName_event(@Param("name_event") String name_event, Pageable pageable);
+  Page<Events> findByNameEvent(@Param("name_event") String name_event, Pageable pageable);
 
   @Query(value = "select events.* from events "
       + "inner join categories on events.category_id = categories.category_id "
-      + "where categories.name = :name",nativeQuery = true)
-  Page<Events> findAllByCategories(@Param("name") String name_category,Pageable pageable);
+      + "where categories.name = :name", nativeQuery = true)
+  Page<Events> findAllByCategories(@Param("name") String name_category, Pageable pageable);
 }

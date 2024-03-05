@@ -6,13 +6,10 @@ import java.util.List;
 import java.util.Optional;
 import org.example.quanlisukien.data.entity.Categories;
 import org.example.quanlisukien.data.entity.Events;
-import org.example.quanlisukien.data.entity.Feedbacks;
 import org.example.quanlisukien.data.entity.Locations;
 import org.example.quanlisukien.data.request.EventRequest;
-import org.example.quanlisukien.data.response.EventGetIdResponse;
 import org.example.quanlisukien.data.response.EventRegistrationResponse;
 import org.example.quanlisukien.data.response.EventsResponse;
-import org.example.quanlisukien.data.response.FeedbackResponse;
 import org.example.quanlisukien.exception.InternalServerException;
 import org.example.quanlisukien.exception.NotFoundException;
 import org.example.quanlisukien.mapper.IEventsMapper;
@@ -77,19 +74,10 @@ public class EventsServiceImpl implements EventsService {
     locationsList.add(locations); // add vao locations
     locationsRepository.save(locations);
 
-    Events events = new Events();
-    events.setName_event(eventRequest.getName_event());
-    events.setDescription(eventRequest.getDescription_event());
-    events.setEvent_image(eventRequest.getEvent_image());
-    events.setStart_time(eventRequest.getStart_time());
-    events.setEnd_time(eventRequest.getEnd_time());
-
-    events.setCategories(categories); // add danh muc vao
-
+    Events events = iEventsMapper.convertEventsEntityMapper(
+        eventRequest); //map tu eventRequest sang entity events
+    events.setCategories(categories);
     events.setLocations(locations);
-
-    events.setDateTime(LocalDateTime.now());
-    events.setUpdateTime(LocalDateTime.now());
 
     try {
       return eventsRepository.save(events);
@@ -162,31 +150,11 @@ public class EventsServiceImpl implements EventsService {
     }
   }
 
-
-  @Override
-  public EventGetIdResponse getById(Long id) {
-    Optional<Events> optionalEvents = eventsRepository.findById(id);
-
-    List<Feedbacks> feedbacks = feedbacksRepository.findByEventsEvent_id(id);
-
-    List<FeedbackResponse> feedbackResponses = feedbackMapper.convertFeedbackMapper(feedbacks);
-
-    if (optionalEvents.isPresent()) {
-      EventGetIdResponse eventGetIdResponse = iEventsMapper.convertEventMapper(
-          optionalEvents.get());
-      eventGetIdResponse.setFeedback(feedbackResponses);
-      return eventGetIdResponse;
-    } else {
-      throw new NotFoundException("no id");
-    }
-  }
-
   @Override
   public Page<EventsResponse> getAll(int ofSize, Pageable pageable) {
-    PageRequest pageRequest = PageRequest.of(ofSize, 10)
+    Page<Events> events = eventsRepository.findAll(PageRequest.of(ofSize, 10)
         .withSort(Sort.by("dateTime")
-            .descending()); //trang bat dau vaf co dinh 5 ban ghi moi trang vaf sap xep giam dan
-    Page<Events> events = eventsRepository.findAll(pageRequest);
+            .descending()));
     Page<EventsResponse> eventsResponses = events.map(events1 -> {
       EventsResponse eventsResponse = iEventsMapper.convertEntityEventsMapper(events1);
       eventsResponse.setNumberFeedback(
@@ -197,9 +165,9 @@ public class EventsServiceImpl implements EventsService {
   }
 
   @Override
-  public Page<EventsResponse> getByName_event(int ofSize, String name_event, Pageable pageable) {
-    Page<Events> events = eventsRepository.findByName_event(name_event,
-        PageRequest.of(ofSize, 5)
+  public Page<EventsResponse> getByNameEvent(int ofSize, String name_event, Pageable pageable) {
+    Page<Events> events = eventsRepository.findByNameEvent(name_event,
+        PageRequest.of(ofSize, 10)
             .withSort(Sort.by("event_id")
                 .descending())); //tim  name_event vs moi trang 5 ban ghi vs sap xe theo giam dan event_id
     Page<EventsResponse> eventsResponses = events.map(events1 -> {
@@ -214,7 +182,7 @@ public class EventsServiceImpl implements EventsService {
   public Page<EventsResponse> getByCategoryName(int offSize, String name_category,
       Pageable pageable) {
     Page<Events> events = eventsRepository.findAllByCategories(name_category,
-        PageRequest.of(offSize, 5).withSort(Sort.by("event_id").descending()));
+        PageRequest.of(offSize, 10).withSort(Sort.by("event_id").descending()));
     Page<EventsResponse> eventsResponses = events.map(events1 -> {
       EventsResponse eventsResponse = iEventsMapper.convertEntityEventsMapper(events1);
       eventsResponse.setNumberFeedback((long) events1.getFeedbacks().size()); //map lai va setNumber

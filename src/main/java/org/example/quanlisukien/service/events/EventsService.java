@@ -3,7 +3,6 @@ package org.example.quanlisukien.service.events;
 
 import org.example.quanlisukien.data.entity.Events;
 import org.example.quanlisukien.data.request.EventRequest;
-import org.example.quanlisukien.data.response.EventGetIdResponse;
 import org.example.quanlisukien.data.response.EventRegistrationResponse;
 import org.example.quanlisukien.data.response.EventsResponse;
 import org.springframework.data.domain.Page;
@@ -17,11 +16,9 @@ public interface EventsService {
 
   Events updateByIdEvents(Long event_id, EventRequest eventRequest); // method update event bang id
 
-  EventGetIdResponse getById(Long id); // method tim kiem event bang id;
-
   Page<EventsResponse> getAll(int ofSize, Pageable pageable); //method hien thi event phan trang
 
-  Page<EventsResponse> getByName_event(int ofSize, String name_event,
+  Page<EventsResponse> getByNameEvent(int ofSize, String name_event,
       Pageable pageable); //tim kiem event theo ten event
 
   Page<EventsResponse> getByCategoryName(int offSize, String name_category,
@@ -29,4 +26,5 @@ public interface EventsService {
 
   Page<EventRegistrationResponse> getAllEventRegistration(int offSize,
       Pageable pageable); //method admin getAll event and feedback and registrations
+
 }
