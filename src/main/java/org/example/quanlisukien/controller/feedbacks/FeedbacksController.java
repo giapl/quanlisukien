@@ -1,6 +1,5 @@
 package org.example.quanlisukien.controller.feedbacks;
 
-import jakarta.validation.Valid;
 import org.example.quanlisukien.data.request.FeedbackRequest;
 import org.example.quanlisukien.service.feedbacks.FeedbackService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +25,7 @@ public class FeedbacksController {
   }
 
   @PostMapping("/create")
-  public ResponseEntity<?> createFeedback(@Valid @RequestBody FeedbackRequest feedbackRequest) {
+  public ResponseEntity<?> createFeedback(@RequestBody FeedbackRequest feedbackRequest) {
     return ResponseEntity.ok(feedbackService.createFeedback(feedbackRequest));
   }
 
