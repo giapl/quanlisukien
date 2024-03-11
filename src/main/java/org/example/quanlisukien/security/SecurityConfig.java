@@ -109,7 +109,7 @@ public class SecurityConfig {
                     HttpMethod.GET.name())).hasAnyAuthority("ADMIN", "USER")
             .requestMatchers(new AntPathRequestMatcher("/api/v1/feedbacks/delete/{{feedback_id}}",
                 HttpMethod.DELETE.name())).hasAnyAuthority("ADMIN", "USER")
-            .requestMatchers(new AntPathRequestMatcher("/api/v1/registrations/registration/event",
+            .requestMatchers(new AntPathRequestMatcher("/api/v1/registrations/event",
                 HttpMethod.POST.name())).hasAnyAuthority("ADMIN", "USER")
             .requestMatchers(
                 new AntPathRequestMatcher("/api/v1/events/search/{{offSize}}/eventRegistrations",

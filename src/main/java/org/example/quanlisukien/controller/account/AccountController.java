@@ -1,5 +1,6 @@
 package org.example.quanlisukien.controller.account;
 
+import jakarta.validation.Valid;
 import org.example.quanlisukien.data.request.AccountAdminRequest;
 import org.example.quanlisukien.data.request.AccountRequest;
 import org.example.quanlisukien.service.account.AccountService;
@@ -58,7 +59,7 @@ public class AccountController {
     return ResponseEntity.ok(accountService.updateAdminById(user_id,accountAdminRequest));
   }
   @PostMapping("/create/admin")
-  public ResponseEntity<?> createAccountAdmin(@RequestBody AccountAdminRequest accountAdminRequest) {
+  public ResponseEntity<?> createAccountAdmin(@Valid @RequestBody AccountAdminRequest accountAdminRequest) {
     return ResponseEntity.ok(accountService.createAccountAdmin(accountAdminRequest));
   }
 }

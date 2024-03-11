@@ -1,5 +1,6 @@
 package org.example.quanlisukien.controller.events;
 
+import jakarta.validation.Valid;
 import org.example.quanlisukien.data.request.EventRequest;
 import org.example.quanlisukien.service.events.EventsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class EventsController {
   }
 
   @PostMapping("/create")
-  public ResponseEntity<?> createEvent(@RequestBody EventRequest eventRequest) {
+  public ResponseEntity<?> createEvent(@Valid @RequestBody EventRequest eventRequest) {
     return ResponseEntity.ok(eventsService.createEvent(eventRequest));
   }
 
@@ -50,7 +51,7 @@ public class EventsController {
   }
 
   @GetMapping("/search/nameEvent/{ofSize}")
-  public ResponseEntity<?> getByName_event(@PathVariable int ofSize,
+  public ResponseEntity<?> getByNameEvent(@PathVariable int ofSize,
       @RequestParam String name_event, Pageable pageable) {
     return ResponseEntity.ok(eventsService.getByNameEvent(ofSize, name_event, pageable));
   }

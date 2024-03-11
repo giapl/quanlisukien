@@ -1,5 +1,6 @@
 package org.example.quanlisukien.controller.categories;
 
+import jakarta.validation.Valid;
 import org.example.quanlisukien.data.request.CategoriesRequest;
 import org.example.quanlisukien.service.categories.CategoriesService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class CategoriesController {
   }
 
   @PostMapping("/create")
-  public ResponseEntity<?> createCategories(@RequestBody CategoriesRequest categoriesRequest) {
+  public ResponseEntity<?> createCategories(@Valid @RequestBody CategoriesRequest categoriesRequest) {
     return ResponseEntity.ok(categoriesService.createCategories(categoriesRequest));
   }
 

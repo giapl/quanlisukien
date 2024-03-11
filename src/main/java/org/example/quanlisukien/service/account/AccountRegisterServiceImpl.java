@@ -8,7 +8,6 @@ import org.example.quanlisukien.exception.InternalServerException;
 import org.example.quanlisukien.exception.NotFoundException;
 import org.example.quanlisukien.repository.AccountRepository;
 import org.example.quanlisukien.repository.RoleRepository;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -34,7 +33,7 @@ public class AccountRegisterServiceImpl implements AccountRegisterService {
   }
 
   @Override
-  public Account register(@NotNull AccountRequest accountRequest) {
+  public Account register(AccountRequest accountRequest) {
     if (accountRepository.existsByUsername(accountRequest.getUsername())) {
       throw new NotFoundException("username da ton tai");
     }

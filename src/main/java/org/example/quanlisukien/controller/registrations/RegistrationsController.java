@@ -1,5 +1,6 @@
 package org.example.quanlisukien.controller.registrations;
 
+import jakarta.validation.Valid;
 import org.example.quanlisukien.data.request.RegistrationRequest;
 import org.example.quanlisukien.service.registrations.RegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,8 @@ public class RegistrationsController {
   public RegistrationsController(RegistrationService registrationService) {
     this.registrationService = registrationService;
   }
-  @PostMapping("/registration/event")
-  public ResponseEntity<?>  registrationEvent(@RequestBody RegistrationRequest registrationRequest) {
+  @PostMapping("/event")
+  public ResponseEntity<?>  registrationEvent(@Valid @RequestBody RegistrationRequest registrationRequest) {
     return ResponseEntity.ok(registrationService.registrationEvent(registrationRequest));
   }
 }

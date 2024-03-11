@@ -1,5 +1,6 @@
 package org.example.quanlisukien.controller.account;
 
+import jakarta.validation.Valid;
 import org.example.quanlisukien.data.request.AccountLoginRequest;
 import org.example.quanlisukien.service.account.AccountLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class LoginController {
   }
 
   @PostMapping("/login")
-  public ResponseEntity<?> login(@RequestBody AccountLoginRequest accountLoginRequest) {
+  public ResponseEntity<?> login(@Valid @RequestBody AccountLoginRequest accountLoginRequest) {
     return ResponseEntity.ok(accountLoginService.login(accountLoginRequest));
   }
 

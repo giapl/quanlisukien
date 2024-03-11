@@ -1,5 +1,6 @@
 package org.example.quanlisukien.controller.role;
 
+import jakarta.validation.Valid;
 import org.example.quanlisukien.data.request.RoleRequest;
 import org.example.quanlisukien.service.role.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class RoleController {
     this.roleService = roleService;
   }
   @PostMapping("/create")
-  public ResponseEntity<?> createRole(@RequestBody RoleRequest roleRequest) {
+  public ResponseEntity<?> createRole(@Valid @RequestBody RoleRequest roleRequest) {
     return ResponseEntity.ok(roleService.createRole(roleRequest));
   }
   @GetMapping("/all")
