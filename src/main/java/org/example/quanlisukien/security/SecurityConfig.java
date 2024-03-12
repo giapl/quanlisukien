@@ -116,6 +116,9 @@ public class SecurityConfig {
                     HttpMethod.GET.name())).hasAuthority("ADMIN")
             .requestMatchers(new AntPathRequestMatcher("/api/v1/events/search/{{offSize}}",
                 HttpMethod.POST.name())).hasAnyAuthority("ADMIN", "USER")
+            .requestMatchers(
+                new AntPathRequestMatcher("/api/v1/events/search", HttpMethod.POST.name()))
+            .hasAnyAuthority("ADMIN","USER")
             .anyRequest()
             .denyAll())
         .httpBasic(Customizer.withDefaults());

@@ -2,6 +2,7 @@ package org.example.quanlisukien.controller.events;
 
 import jakarta.validation.Valid;
 import org.example.quanlisukien.data.request.EventRequest;
+import org.example.quanlisukien.data.request.EventSearchRequest;
 import org.example.quanlisukien.service.events.EventsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -65,5 +66,11 @@ public class EventsController {
   @GetMapping("/search/{offSize}/eventRegistrations")
   public ResponseEntity<?> getAllEventRegistration(@PathVariable int offSize, Pageable pageable) {
     return ResponseEntity.ok(eventsService.getAllEventRegistration(offSize, pageable));
+  }
+
+  @PostMapping("/search")
+  public ResponseEntity<?> getAll(@RequestParam int offSize, Pageable pageable,
+      @RequestBody EventSearchRequest eventSearchRequest) {
+    return ResponseEntity.ok(eventsService.search(offSize, pageable, eventSearchRequest));
   }
 }

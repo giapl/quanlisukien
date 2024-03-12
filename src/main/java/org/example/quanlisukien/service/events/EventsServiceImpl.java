@@ -8,6 +8,7 @@ import org.example.quanlisukien.data.entity.Categories;
 import org.example.quanlisukien.data.entity.Events;
 import org.example.quanlisukien.data.entity.Locations;
 import org.example.quanlisukien.data.request.EventRequest;
+import org.example.quanlisukien.data.request.EventSearchRequest;
 import org.example.quanlisukien.data.response.EventRegistrationResponse;
 import org.example.quanlisukien.data.response.EventsResponse;
 import org.example.quanlisukien.exception.InternalServerException;
@@ -15,6 +16,7 @@ import org.example.quanlisukien.exception.NotFoundException;
 import org.example.quanlisukien.mapper.IEventsMapper;
 import org.example.quanlisukien.mapper.IFeedbackMapper;
 import org.example.quanlisukien.repository.CategoriesRepository;
+import org.example.quanlisukien.repository.EventSpecification;
 import org.example.quanlisukien.repository.EventsRepository;
 import org.example.quanlisukien.repository.FeedbacksRepository;
 import org.example.quanlisukien.repository.LocationsRepository;
@@ -202,6 +204,18 @@ public class EventsServiceImpl implements EventsService {
       return response;
     });
     return eventRegistrationResponses;
+  }
+
+  @Override
+  public Page<EventsResponse> search(int offSize , Pageable pageable,EventSearchRequest eventSearchRequest) {
+    EventSpecification specification = new EventSpecification(eventSearchRequest);
+    Page<Events> events = eventsRepository.findAll(specification,PageRequest.of(offSize,10));
+    Page<EventsResponse> eventsResponses = events .map(events1 -> {
+      EventsResponse eventsResponse = iEventsMapper.convertEntityEventsMapper(events1);
+      eventsResponse.setNumberFeedback((long) events1.getFeedbacks().size());
+      return eventsResponse;
+    });
+    return eventsResponses;
   }
 
 }
