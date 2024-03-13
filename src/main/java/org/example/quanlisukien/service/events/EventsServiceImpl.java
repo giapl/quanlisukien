@@ -14,11 +14,9 @@ import org.example.quanlisukien.data.response.EventsResponse;
 import org.example.quanlisukien.exception.InternalServerException;
 import org.example.quanlisukien.exception.NotFoundException;
 import org.example.quanlisukien.mapper.IEventsMapper;
-import org.example.quanlisukien.mapper.IFeedbackMapper;
 import org.example.quanlisukien.repository.CategoriesRepository;
 import org.example.quanlisukien.repository.EventSpecification;
 import org.example.quanlisukien.repository.EventsRepository;
-import org.example.quanlisukien.repository.FeedbacksRepository;
 import org.example.quanlisukien.repository.LocationsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -41,22 +39,15 @@ public class EventsServiceImpl implements EventsService {
 
   private final IEventsMapper iEventsMapper;
 
-  private final FeedbacksRepository feedbacksRepository;
-
-  private final IFeedbackMapper feedbackMapper;
-
 
   @Autowired
   public EventsServiceImpl(CategoriesRepository categoriesRepository,
       EventsRepository eventsRepository, LocationsRepository locationsRepository,
-      IEventsMapper iEventsMapper, FeedbacksRepository feedbacksRepository,
-      IFeedbackMapper feedbackMapper) {
+      IEventsMapper iEventsMapper) {
     this.categoriesRepository = categoriesRepository;
     this.eventsRepository = eventsRepository;
     this.locationsRepository = locationsRepository;
     this.iEventsMapper = iEventsMapper;
-    this.feedbacksRepository = feedbacksRepository;
-    this.feedbackMapper = feedbackMapper;
   }
 
   @Override
@@ -102,17 +93,18 @@ public class EventsServiceImpl implements EventsService {
     Optional<Events> optionalEvents = eventsRepository.findById(event_id);
     if (optionalEvents.isPresent()) {
       Events events = optionalEvents.get();
-      if (eventRequest.getName_event() != null) {
+      if (eventRequest.getName_event() != null && !eventRequest.getName_event().isEmpty()) {
         events.setName_event(eventRequest.getName_event());
       }
-      if (eventRequest.getDescription_event() != null) {
+      if (eventRequest.getDescription_event() != null && !eventRequest.getDescription_event()
+          .isEmpty()) {
         events.setDescription(eventRequest.getDescription_event());
       }
-      if (eventRequest.getEvent_image() != null) {
+      if (eventRequest.getEvent_image() != null && !eventRequest.getEvent_image().isEmpty()) {
         events.setEvent_image(eventRequest.getEvent_image());
       }
 
-      if (eventRequest.getName_category() != null) {
+      if (eventRequest.getName_category() != null && !eventRequest.getName_category().isEmpty()) {
         Categories categories = categoriesRepository.findByName(
                 eventRequest.getName_category()) //tim kiem ten danh muc lay ra
             .get();
@@ -120,18 +112,20 @@ public class EventsServiceImpl implements EventsService {
       }
 
       Locations locations = events.getLocations(); //lay ra locations
-      if (eventRequest.getName_location() != null) { // kiem tra xem co nhap gi de update hay ko
+      if (eventRequest.getName_location() != null && !eventRequest.getName_location()
+          .isEmpty()) { // kiem tra xem co nhap gi de update hay ko
         locations.setName(eventRequest.getName_location()); //set name location ben locations
         events.setLocations(locations); //set locations ben events
       }
 
-      if (eventRequest.getDescription_address() != null) {
+      if (eventRequest.getDescription_address() != null && !eventRequest.getDescription_address()
+          .isEmpty()) {
         locations.setDescription(
             eventRequest.getDescription_address()); //set description ben locations
         events.setLocations(locations); //set locations ben events
       }
 
-      if (eventRequest.getAddress() != null) {
+      if (eventRequest.getAddress() != null && !eventRequest.getAddress().isEmpty()) {
         locations.setAddress(eventRequest.getAddress()); // set address ben locations
         events.setLocations(locations); //set locations ben events
       }
@@ -153,47 +147,6 @@ public class EventsServiceImpl implements EventsService {
   }
 
   @Override
-  public Page<EventsResponse> getAll(int ofSize, Pageable pageable) {
-    Page<Events> events = eventsRepository.findAll(PageRequest.of(ofSize, 10)
-        .withSort(Sort.by("dateTime")
-            .descending()));
-    Page<EventsResponse> eventsResponses = events.map(events1 -> {
-      EventsResponse eventsResponse = iEventsMapper.convertEntityEventsMapper(events1);
-      eventsResponse.setNumberFeedback(
-          (long) events1.getFeedbacks().size()); // map lai vs set number
-      return eventsResponse;
-    });
-    return eventsResponses;
-  }
-
-  @Override
-  public Page<EventsResponse> getByNameEvent(int ofSize, String name_event, Pageable pageable) {
-    Page<Events> events = eventsRepository.findByNameEvent(name_event,
-        PageRequest.of(ofSize, 10)
-            .withSort(Sort.by("event_id")
-                .descending())); //tim  name_event vs moi trang 5 ban ghi vs sap xe theo giam dan event_id
-    Page<EventsResponse> eventsResponses = events.map(events1 -> {
-      EventsResponse eventsResponse = iEventsMapper.convertEntityEventsMapper(events1);
-      eventsResponse.setNumberFeedback((long) events1.getFeedbacks().size()); //map lai va setNumber
-      return eventsResponse;
-    });
-    return eventsResponses;
-  }
-
-  @Override
-  public Page<EventsResponse> getByCategoryName(int offSize, String name_category,
-      Pageable pageable) {
-    Page<Events> events = eventsRepository.findAllByCategories(name_category,
-        PageRequest.of(offSize, 10).withSort(Sort.by("event_id").descending()));
-    Page<EventsResponse> eventsResponses = events.map(events1 -> {
-      EventsResponse eventsResponse = iEventsMapper.convertEntityEventsMapper(events1);
-      eventsResponse.setNumberFeedback((long) events1.getFeedbacks().size()); //map lai va setNumber
-      return eventsResponse;
-    });
-    return eventsResponses;
-  }
-
-  @Override
   public Page<EventRegistrationResponse> getAllEventRegistration(int offSize, Pageable pageable) {
     Page<Events> events = eventsRepository.findAll(
         PageRequest.of(offSize, 5).withSort(Sort.by("dateTime").descending()));
@@ -207,10 +160,12 @@ public class EventsServiceImpl implements EventsService {
   }
 
   @Override
-  public Page<EventsResponse> search(int offSize , Pageable pageable,EventSearchRequest eventSearchRequest) {
+  public Page<EventsResponse> search(int offSize, Pageable pageable,
+      EventSearchRequest eventSearchRequest) {
     EventSpecification specification = new EventSpecification(eventSearchRequest);
-    Page<Events> events = eventsRepository.findAll(specification,PageRequest.of(offSize,10));
-    Page<EventsResponse> eventsResponses = events .map(events1 -> {
+    Page<Events> events = eventsRepository.findAll(specification,
+        PageRequest.of(offSize, 10).withSort(Sort.by("dateTime").descending()));
+    Page<EventsResponse> eventsResponses = events.map(events1 -> {
       EventsResponse eventsResponse = iEventsMapper.convertEntityEventsMapper(events1);
       eventsResponse.setNumberFeedback((long) events1.getFeedbacks().size());
       return eventsResponse;

@@ -46,30 +46,13 @@ public class EventsController {
     return ResponseEntity.ok("update event successful admin");
   }
 
-  @GetMapping("/all/{ofSize}")
-  public ResponseEntity<?> getAll(@PathVariable int ofSize, Pageable pageable) {
-    return ResponseEntity.ok(eventsService.getAll(ofSize, pageable));
-  }
-
-  @GetMapping("/search/nameEvent/{ofSize}")
-  public ResponseEntity<?> getByNameEvent(@PathVariable int ofSize,
-      @RequestParam String name_event, Pageable pageable) {
-    return ResponseEntity.ok(eventsService.getByNameEvent(ofSize, name_event, pageable));
-  }
-
-  @GetMapping("/search/{offSize}/{name_category}")
-  public ResponseEntity<?> getByCategoryName(@PathVariable int offSize,
-      @PathVariable String name_category, Pageable pageable) {
-    return ResponseEntity.ok(eventsService.getByCategoryName(offSize, name_category, pageable));
-  }
-
   @GetMapping("/search/{offSize}/eventRegistrations")
   public ResponseEntity<?> getAllEventRegistration(@PathVariable int offSize, Pageable pageable) {
     return ResponseEntity.ok(eventsService.getAllEventRegistration(offSize, pageable));
   }
 
-  @PostMapping("/search")
-  public ResponseEntity<?> getAll(@RequestParam int offSize, Pageable pageable,
+  @PostMapping("/search/{offSize}")
+  public ResponseEntity<?> searchAndFilter(@PathVariable int offSize, Pageable pageable,
       @RequestBody EventSearchRequest eventSearchRequest) {
     return ResponseEntity.ok(eventsService.search(offSize, pageable, eventSearchRequest));
   }

@@ -17,16 +17,9 @@ public interface EventsService {
 
   Events updateByIdEvents(Long event_id, EventRequest eventRequest); // method update event bang id
 
-  Page<EventsResponse> getAll(int ofSize, Pageable pageable); //method hien thi event phan trang
-
-  Page<EventsResponse> getByNameEvent(int ofSize, String name_event,
-      Pageable pageable); //tim kiem event theo ten event
-
-  Page<EventsResponse> getByCategoryName(int offSize, String name_category,
-      Pageable pageable); //method getBy name_category lay ra event
-
   Page<EventRegistrationResponse> getAllEventRegistration(int offSize,
       Pageable pageable); //method admin getAll event and feedback and registrations
 
-  Page<EventsResponse> search(int offSize , Pageable pageable, EventSearchRequest eventSearchRequest);
+  Page<EventsResponse> search(int offSize, Pageable pageable,
+      EventSearchRequest eventSearchRequest); //method search and filter
 }
