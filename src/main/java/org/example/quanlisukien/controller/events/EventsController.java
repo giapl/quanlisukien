@@ -6,6 +6,10 @@ import org.example.quanlisukien.data.request.EventSearchRequest;
 import org.example.quanlisukien.service.events.EventsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,9 +50,12 @@ public class EventsController {
     return ResponseEntity.ok("update event successful admin");
   }
 
-  @GetMapping("/search/{offSize}/eventRegistrations")
-  public ResponseEntity<?> getAllEventRegistration(@PathVariable int offSize, Pageable pageable) {
-    return ResponseEntity.ok(eventsService.getAllEventRegistration(offSize, pageable));
+  @GetMapping("/search/eventRegistrations")
+  public ResponseEntity<?> getAllEventRegistration(
+      @PageableDefault(page = 0, size = 20) @SortDefault.SortDefaults(@SortDefault(sort = "dateTime",
+          direction = Direction.DESC))
+      Pageable pageable) {
+    return ResponseEntity.ok(eventsService.getAllEventRegistration(pageable));
   }
 
   @PostMapping("/search/{offSize}")

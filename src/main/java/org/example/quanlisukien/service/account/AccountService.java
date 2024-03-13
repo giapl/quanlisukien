@@ -10,15 +10,15 @@ public interface AccountService {
 
   List<AccountResponse> getByAllAccount(); //method xem tat ca danh sach account
 
-  AccountResponse getByIdAccount(Long user_id); //method tim kiem bang id
+  AccountResponse getByIdAccount(Long userId); //method tim kiem bang id
 
   AccountResponse getByUsernameAccount(String username); //method tim kiem username
 
-   void deleteByIdAccount(Long user_id); //method xoa account
+   void deleteByIdAccount(Long userId); //method xoa account
 
-  Account updateByIdPassword(Long user_id , AccountRequest accountRequest); //method cap nhat mat khau
+  Account updateByIdPassword(Long userId , AccountRequest accountRequest); //method cap nhat mat khau
 
-  Account updateAdminById(Long user_id , AccountAdminRequest accountAdminRequest); //method cap nhat accout cho admin
+  Account updateAdminById(Long userId , AccountAdminRequest accountAdminRequest); //method cap nhat accout cho admin
 
   Account createAccountAdmin(AccountAdminRequest accountAdminRequest); //method tao account cho admin;
 }

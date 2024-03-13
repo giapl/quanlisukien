@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class RoleResponse {
 
-  private Long role_id;
+  private Long roleId;
 
   private String RoleName;
 

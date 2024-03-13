@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class CategoriesServiceImpl implements CategoriesService{
+public class CategoriesServiceImpl implements CategoriesService {
 
   private final CategoriesRepository categoriesRepository;
   private final ICategoriesMapper categoriesMapper;
@@ -32,11 +32,7 @@ public class CategoriesServiceImpl implements CategoriesService{
 
   @Override
   public Categories createCategories(CategoriesRequest categoriesRequest) {
-    Categories categories = new Categories();
-    categories.setName(categoriesRequest.getName());
-    categories.setDescription(categoriesRequest.getDescription());
-    categories.setDateTime(LocalDateTime.now());
-    categories.setUpdateTime(LocalDateTime.now());
+    Categories categories = categoriesMapper.categoriesMapper(categoriesRequest);
     try {
       return categoriesRepository.save(categories);
     } catch (DataAccessException ex) {
@@ -53,23 +49,23 @@ public class CategoriesServiceImpl implements CategoriesService{
   }
 
   @Override
-  public void deleteByIdCategories(Long category_id) {
-    if(categoriesRepository.existsById(category_id)){
-      categoriesRepository.deleteById(category_id);
+  public void deleteByIdCategories(Long categoryId) {
+    if (categoriesRepository.existsById(categoryId)) {
+      categoriesRepository.deleteById(categoryId);
     } else {
       throw new NotFoundException("no id delete categories admin");
     }
   }
 
   @Override
-  public Categories updateByIdCategories(Long category_id, CategoriesRequest categoriesRequest) {
-    Optional<Categories> optionalCategories = categoriesRepository.findById(category_id);
-    if(optionalCategories.isPresent()) {
+  public Categories updateByIdCategories(Long categoryId, CategoriesRequest categoriesRequest) {
+    Optional<Categories> optionalCategories = categoriesRepository.findById(categoryId);
+    if (optionalCategories.isPresent()) {
       Categories categories = optionalCategories.get();
-      if(categoriesRequest.getName() !=null) {
+      if (categoriesRequest.getName() != null) {
         categories.setName(categoriesRequest.getName());
       }
-      if(categoriesRequest.getDescription() !=null) {
+      if (categoriesRequest.getDescription() != null) {
         categories.setDescription(categoriesRequest.getDescription());
       }
       categories.setUpdateTime(LocalDateTime.now());

@@ -40,9 +40,6 @@ public class AccountRegisterServiceImpl implements AccountRegisterService {
     if (accountRepository.existsByEmail(accountRequest.getEmail())) {
       throw new NotFoundException("email da ton tai");
     }
-    if (accountRequest.getPassword() == null) {
-      throw new NotFoundException("password no null");
-    }
 
     Account account = new Account();
     account.setUsername(accountRequest.getUsername());

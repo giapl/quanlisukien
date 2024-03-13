@@ -53,13 +53,13 @@ public class EventsServiceImpl implements EventsService {
   @Override
   public Events createEvent(EventRequest eventRequest) {
 
-    Categories categories = categoriesRepository.findByName(eventRequest.getName_category())
+    Categories categories = categoriesRepository.findByName(eventRequest.getNameCategory())
         .get(); //tim kiem danh muc
 
     Locations locations = new Locations(); //tao ra 1 dia diem to chuc event
-    locations.setName(eventRequest.getName_location());
+    locations.setName(eventRequest.getNameLocation());
     locations.setAddress(eventRequest.getAddress());
-    locations.setDescription(eventRequest.getDescription_address());
+    locations.setDescription(eventRequest.getDescriptionAddress());
     locations.setDateTime(LocalDateTime.now());
     locations.setUpdateTime(LocalDateTime.now());
 
@@ -80,48 +80,48 @@ public class EventsServiceImpl implements EventsService {
   }
 
   @Override
-  public void deleteByIdEvent(Long event_id) {
-    if (eventsRepository.existsById(event_id)) { //kiem tra xem id co ton tai ko
-      eventsRepository.deleteById(event_id);
+  public void deleteByIdEvent(Long eventId) {
+    if (eventsRepository.existsById(eventId)) { //kiem tra xem id co ton tai ko
+      eventsRepository.deleteById(eventId);
     } else {
       throw new NotFoundException("no id delete admin");
     }
   }
 
   @Override
-  public Events updateByIdEvents(Long event_id, EventRequest eventRequest) {
-    Optional<Events> optionalEvents = eventsRepository.findById(event_id);
+  public Events updateByIdEvents(Long eventId, EventRequest eventRequest) {
+    Optional<Events> optionalEvents = eventsRepository.findById(eventId);
     if (optionalEvents.isPresent()) {
       Events events = optionalEvents.get();
-      if (eventRequest.getName_event() != null && !eventRequest.getName_event().isEmpty()) {
-        events.setName_event(eventRequest.getName_event());
+      if (eventRequest.getNameEvent() != null && !eventRequest.getNameEvent().isEmpty()) {
+        events.setNameEvent(eventRequest.getNameEvent());
       }
-      if (eventRequest.getDescription_event() != null && !eventRequest.getDescription_event()
+      if (eventRequest.getDescriptionEvent() != null && !eventRequest.getDescriptionEvent()
           .isEmpty()) {
-        events.setDescription(eventRequest.getDescription_event());
+        events.setDescription(eventRequest.getDescriptionEvent());
       }
-      if (eventRequest.getEvent_image() != null && !eventRequest.getEvent_image().isEmpty()) {
-        events.setEvent_image(eventRequest.getEvent_image());
+      if (eventRequest.getEventImage() != null && !eventRequest.getEventImage().isEmpty()) {
+        events.setEventImage(eventRequest.getEventImage());
       }
 
-      if (eventRequest.getName_category() != null && !eventRequest.getName_category().isEmpty()) {
+      if (eventRequest.getNameCategory() != null && !eventRequest.getNameCategory().isEmpty()) {
         Categories categories = categoriesRepository.findByName(
-                eventRequest.getName_category()) //tim kiem ten danh muc lay ra
+                eventRequest.getNameCategory()) //tim kiem ten danh muc lay ra
             .get();
         events.setCategories(categories); // set vao event
       }
 
       Locations locations = events.getLocations(); //lay ra locations
-      if (eventRequest.getName_location() != null && !eventRequest.getName_location()
+      if (eventRequest.getNameLocation() != null && !eventRequest.getNameLocation()
           .isEmpty()) { // kiem tra xem co nhap gi de update hay ko
-        locations.setName(eventRequest.getName_location()); //set name location ben locations
+        locations.setName(eventRequest.getNameLocation()); //set name location ben locations
         events.setLocations(locations); //set locations ben events
       }
 
-      if (eventRequest.getDescription_address() != null && !eventRequest.getDescription_address()
+      if (eventRequest.getDescriptionAddress() != null && !eventRequest.getDescriptionAddress()
           .isEmpty()) {
         locations.setDescription(
-            eventRequest.getDescription_address()); //set description ben locations
+            eventRequest.getDescriptionAddress()); //set description ben locations
         events.setLocations(locations); //set locations ben events
       }
 
@@ -132,12 +132,12 @@ public class EventsServiceImpl implements EventsService {
 
       locationsRepository.save(locations); // luu du lieu update location ben locations
 
-      if (eventRequest.getStart_time() != null) {
-        events.setStart_time(eventRequest.getStart_time());
+      if (eventRequest.getStartTime() != null) {
+        events.setStartTime(eventRequest.getStartTime());
       }
 
-      if (eventRequest.getEnd_time() != null) {
-        events.setEnd_time(eventRequest.getEnd_time());
+      if (eventRequest.getEndTime() != null) {
+        events.setEndTime(eventRequest.getEndTime());
       }
       events.setUpdateTime(LocalDateTime.now());
       return eventsRepository.save(events);
@@ -147,9 +147,8 @@ public class EventsServiceImpl implements EventsService {
   }
 
   @Override
-  public Page<EventRegistrationResponse> getAllEventRegistration(int offSize, Pageable pageable) {
-    Page<Events> events = eventsRepository.findAll(
-        PageRequest.of(offSize, 5).withSort(Sort.by("dateTime").descending()));
+  public Page<EventRegistrationResponse> getAllEventRegistration(Pageable pageable) {
+    Page<Events> events = eventsRepository.findAll(pageable);
     Page<EventRegistrationResponse> eventRegistrationResponses = events.map(events1 -> {
       EventRegistrationResponse response = iEventsMapper.convertEventRegistrationMapper(events1);
       response.setNumberFeedback((long) events1.getFeedbacks().size());

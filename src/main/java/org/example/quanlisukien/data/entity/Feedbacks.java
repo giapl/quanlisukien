@@ -27,11 +27,11 @@ public class Feedbacks {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "feedback_id")
-  private Long feedback_id;
+  private Long feedbackId;
   @Column(name = "feedback_content")
-  private String feedback_content;
+  private String feedbackContent;
   @Column(name = "feedback_image")
-  private String feedback_image;
+  private String feedbackImage;
 
   @Column(name = "username")
   private String username;

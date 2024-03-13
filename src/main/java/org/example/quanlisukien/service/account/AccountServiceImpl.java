@@ -49,8 +49,8 @@ public class AccountServiceImpl implements AccountService {
   }
 
   @Override
-  public AccountResponse getByIdAccount(Long user_id) {
-    Optional<Account> account = accountRepository.findById(user_id);
+  public AccountResponse getByIdAccount(Long userId) {
+    Optional<Account> account = accountRepository.findById(userId);
 
     if (account.isPresent()) {
       Account account1 = account.get();
@@ -77,17 +77,17 @@ public class AccountServiceImpl implements AccountService {
   }
 
   @Override
-  public void deleteByIdAccount(Long user_id) {
-    if (accountRepository.existsById(user_id)) {
-      accountRepository.deleteById(user_id);
+  public void deleteByIdAccount(Long userId) {
+    if (accountRepository.existsById(userId)) {
+      accountRepository.deleteById(userId);
     } else {
-      throw new NotFoundException("no id database : " + user_id);
+      throw new NotFoundException("no id database : " + userId);
     }
   }
 
   @Override
-  public Account updateByIdPassword(Long user_id, AccountRequest accountRequest) {
-    Optional<Account> optionalAccount = accountRepository.findByUserId(user_id);
+  public Account updateByIdPassword(Long userId, AccountRequest accountRequest) {
+    Optional<Account> optionalAccount = accountRepository.findByUserId(userId);
     if (optionalAccount.isPresent()) {
       Account account = optionalAccount.get();
       account.setPassword(passwordEncoder.encode(accountRequest.getPassword()));
@@ -99,8 +99,8 @@ public class AccountServiceImpl implements AccountService {
   }
 
   @Override
-  public Account updateAdminById(Long user_id, AccountAdminRequest accountAdminRequest) {
-    Optional<Account> accountOptional = accountRepository.findByUserId(user_id);
+  public Account updateAdminById(Long userId, AccountAdminRequest accountAdminRequest) {
+    Optional<Account> accountOptional = accountRepository.findByUserId(userId);
     if (accountOptional.isPresent()) {
       Account account = accountOptional.get();
       if (accountAdminRequest.getUsername() != null) {

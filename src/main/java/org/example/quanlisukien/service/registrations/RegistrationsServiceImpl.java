@@ -35,9 +35,9 @@ public class RegistrationsServiceImpl implements RegistrationService {
 
   @Override
   public Registrations registrationEvent(RegistrationRequest registrationRequest) {
-    Optional<Events> eventsOptional = eventsRepository.findById(registrationRequest.getEvent_id());
+    Optional<Events> eventsOptional = eventsRepository.findById(registrationRequest.getEventId());
     Optional<Account> accountOptional = accountRepository.findById(
-        registrationRequest.getUser_id());
+        registrationRequest.getUserId());
     if (eventsOptional.isPresent() && accountOptional.isPresent()) {
       Events events = eventsOptional.get();
       Account account = accountOptional.get();

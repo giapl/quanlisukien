@@ -12,27 +12,27 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class EventRegistrationResponse {
 
-  private Long event_id;
+  private Long eventId;
 
-  private String name_event;
+  private String nameEvent;
 
-  private String description_event;
+  private String descriptionEvent;
 
-  private String event_image;
+  private String eventImage;
 
-  private String name_category;
+  private String nameCategory;
 
-  private String name_location;
+  private String nameLocation;
 
   private String address;
 
-  private String description_address;
+  private String descriptionAddress;
 
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-  private LocalDateTime start_time;
+  private LocalDateTime startTime;
 
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-  private LocalDateTime end_time;
+  private LocalDateTime endTime;
 
   private Long numberFeedback;
 

@@ -13,11 +13,11 @@ public interface EventsService {
 
   Events createEvent(EventRequest eventRequest); //method tao 1 event moi do admin
 
-  void deleteByIdEvent(Long event_id); //method xoa event bang id
+  void deleteByIdEvent(Long eventId); //method xoa event bang id
 
-  Events updateByIdEvents(Long event_id, EventRequest eventRequest); // method update event bang id
+  Events updateByIdEvents(Long eventId, EventRequest eventRequest); // method update event bang id
 
-  Page<EventRegistrationResponse> getAllEventRegistration(int offSize,
+  Page<EventRegistrationResponse> getAllEventRegistration(
       Pageable pageable); //method admin getAll event and feedback and registrations
 
   Page<EventsResponse> search(int offSize, Pageable pageable,

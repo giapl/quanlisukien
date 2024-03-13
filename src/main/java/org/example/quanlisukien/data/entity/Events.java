@@ -32,21 +32,21 @@ public class Events {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "event_id")
-  private Long event_id;
+  private Long eventId;
   @Column(name = "name_event")
-  private String name_event;
+  private String nameEvent;
   @Column(name = "description")
   private String description;
   @Column(name = "event_image")
-  private String event_image;
+  private String eventImage;
 
   @Column(name = "start_time")
   @JsonFormat(pattern = "yyyy:MM:DD hh:mm:ss")
-  private LocalDateTime start_time;
+  private LocalDateTime startTime;
 
   @Column(name = "end_time")
   @JsonFormat(pattern = "yyyy:MM:DD hh:mm:ss")
-  private LocalDateTime end_time;
+  private LocalDateTime endTime;
 
   @Column(name = "create_at")
   private LocalDateTime dateTime;

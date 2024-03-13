@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class EventSearchRequest {
 
-  private String name_event;
+  private String nameEvent;
 
-  private String name_category;
+  private String nameCategory;
 
-  private String name_location;
+  private String nameLocation;
 }

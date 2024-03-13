@@ -31,17 +31,17 @@ public class EventSpecification implements Specification<Events> {
     Join<Events, Categories> eventJoinCategories = root.join("categories", JoinType.INNER);
     Join<Events, Locations>  eventsLocationsJoin = root.join("locations",JoinType.INNER);
 
-    if(search.getName_event() !=null && !search.getName_event().isEmpty()) {
+    if(search.getNameEvent() !=null && !search.getNameEvent().isEmpty()) {
       predicates.add(
-          criteriaBuilder.like(root.get("name_event"), "%"+ search.getName_event()+"%"));
+          criteriaBuilder.like(root.get("nameEvent"), "%"+ search.getNameEvent()+"%"));
     }
 
-    if(search.getName_category() !=null && !search.getName_category().isEmpty()) {
-      predicates.add(criteriaBuilder.like(eventJoinCategories.get("name"),search.getName_category()));
+    if(search.getNameCategory() !=null && !search.getNameCategory().isEmpty()) {
+      predicates.add(criteriaBuilder.like(eventJoinCategories.get("name"),search.getNameCategory()));
     }
 
-    if (search.getName_location() != null && !search.getName_location().isEmpty()) {
-      predicates.add(criteriaBuilder.like(eventsLocationsJoin.get("name"), search.getName_location()));
+    if (search.getNameLocation() != null && !search.getNameLocation().isEmpty()) {
+      predicates.add(criteriaBuilder.like(eventsLocationsJoin.get("name"), search.getNameLocation()));
     }
 
     return criteriaBuilder.and(predicates.toArray(new Predicate[0]));

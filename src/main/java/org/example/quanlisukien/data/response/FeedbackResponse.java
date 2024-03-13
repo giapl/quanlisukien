@@ -11,10 +11,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class FeedbackResponse {
 
-  private Long feedback_id;
+  private Long feedbackId;
   private String username;
-  private String feedback_content;
-  private String feedback_image;
+  private String feedbackContent;
+  private String feedbackImage;
 
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   private LocalDateTime dateTime;

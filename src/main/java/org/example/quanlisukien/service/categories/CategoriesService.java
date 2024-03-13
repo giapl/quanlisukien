@@ -11,7 +11,7 @@ public interface CategoriesService {
 
   List<CategoriesResponse> findByAllCategories();//hien thi danh sach danh muc
 
-  void deleteByIdCategories(Long category_id);//method xoa theo id
+  void deleteByIdCategories(Long categoryId);//method xoa theo id
 
-  Categories updateByIdCategories(Long category_id , CategoriesRequest categoriesRequest); //update categories bang id
+  Categories updateByIdCategories(Long categoryId , CategoriesRequest categoriesRequest); //update categories bang id
 }

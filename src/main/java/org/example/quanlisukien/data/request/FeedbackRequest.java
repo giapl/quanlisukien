@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class FeedbackRequest {
 
-  private Long user_id;
+  private Long userId;
 
-  private Long event_id;
+  private Long eventId;
 
-  private String feedback_content;
+  private String feedbackContent;
 
-  private String feedback_image;
+  private String feedbackImage;
 }

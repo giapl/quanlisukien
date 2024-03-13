@@ -36,15 +36,15 @@ public class FeedbackServiceImpl implements FeedbackService {
 
   @Override
   public Feedbacks createFeedback(FeedbackRequest feedbackRequest) {
-    Optional<Account> account = accountRepository.findById(feedbackRequest.getUser_id());
-    Optional<Events> events = eventsRepository.findById(feedbackRequest.getEvent_id());
+    Optional<Account> account = accountRepository.findById(feedbackRequest.getUserId());
+    Optional<Events> events = eventsRepository.findById(feedbackRequest.getEventId());
     if (account.isPresent() && events.isPresent()) {
       Account account1 = account.get();
       Events events1 = events.get();
 
       Feedbacks feedbacks = new Feedbacks();
-      feedbacks.setFeedback_content(feedbackRequest.getFeedback_content());
-      feedbacks.setFeedback_image(feedbackRequest.getFeedback_image());
+      feedbacks.setFeedbackContent(feedbackRequest.getFeedbackContent());
+      feedbacks.setFeedbackImage(feedbackRequest.getFeedbackImage());
       feedbacks.setAccount(account1);
       feedbacks.setEvents(events1);
       feedbacks.setDateTime(LocalDateTime.now());
@@ -62,21 +62,21 @@ public class FeedbackServiceImpl implements FeedbackService {
   }
 
   @Override
-  public Feedbacks updateFeedback(Long feedback_id, FeedbackRequest feedbackRequest) {
-    Optional<Feedbacks> feedbacksOptional = feedbacksRepository.findById(feedback_id);
+  public Feedbacks updateFeedback(Long feedbackId, FeedbackRequest feedbackRequest) {
+    Optional<Feedbacks> feedbacksOptional = feedbacksRepository.findById(feedbackId);
     if (feedbacksOptional.isPresent()) {
       Feedbacks feedbacks = feedbacksOptional.get();
 
       //check user_id va event_id co quyen sua feedback hay ko
-      if (feedbacks.getEvents().getEvent_id().equals(feedbackRequest.getEvent_id())
-          && feedbacks.getAccount().getUser_id().equals(feedbackRequest.getUser_id())) {
+      if (feedbacks.getEvents().getEventId().equals(feedbackRequest.getEventId())
+          && feedbacks.getAccount().getUserId().equals(feedbackRequest.getUserId())) {
 
-        if (feedbackRequest.getFeedback_content() != null) {
-          feedbacks.setFeedback_content(feedbackRequest.getFeedback_content());
+        if (feedbackRequest.getFeedbackContent() != null) {
+          feedbacks.setFeedbackContent(feedbackRequest.getFeedbackContent());
         }
 
-        if (feedbackRequest.getFeedback_image() != null) {
-          feedbacks.setFeedback_image(feedbackRequest.getFeedback_image());
+        if (feedbackRequest.getFeedbackImage() != null) {
+          feedbacks.setFeedbackImage(feedbackRequest.getFeedbackImage());
         }
 
         feedbacks.setUpdateTime(LocalDateTime.now());
@@ -87,10 +87,10 @@ public class FeedbackServiceImpl implements FeedbackService {
   }
 
   @Override
-  public void deleteFeedback(Long feedback_id) {
+  public void deleteFeedback(Long feedbackId) {
 
-    if(feedbacksRepository.existsById(feedback_id)) {
-      feedbacksRepository.deleteById(feedback_id);
+    if(feedbacksRepository.existsById(feedbackId)) {
+      feedbacksRepository.deleteById(feedbackId);
     } else {
       throw new NotFoundException("no id delete feedback");
     }

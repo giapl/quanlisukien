@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RegistrationsResponse {
 
-  private Long registrations_id;
+  private Long registrationsId;
 
   private String username;
 

@@ -1,7 +1,6 @@
 package org.example.quanlisukien.data.request;
 
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -15,9 +14,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RegistrationRequest {
 
-  private Long event_id;
+  private Long eventId;
 
-  private Long user_id;
+  private Long userId;
 
   private String username;
 

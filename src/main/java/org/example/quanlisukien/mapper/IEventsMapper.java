@@ -12,28 +12,29 @@ import org.mapstruct.Mapping;
 public interface IEventsMapper {
 
 
-  @Mapping(source = "categories.name", target = "name_category")
-  @Mapping(source = "locations.name", target = "name_location")
+  @Mapping(source = "categories.name", target = "nameCategory")
+  @Mapping(source = "locations.name", target = "nameLocation")
   @Mapping(source = "locations.address", target = "address")
-  @Mapping(source = "locations.description", target = "description_address")
+  @Mapping(source = "locations.description", target = "descriptionAddress")
   @Mapping(source = "events.feedbacks", target = "feedback")
   EventsResponse convertEntityEventsMapper(
       Events events); // convert events sang eventsResponse cho method all event and name_event and name_category
 
-  @Mapping(source = "events.event_id", target = "event_id")
-  @Mapping(source = "categories.name", target = "name_category")
-  @Mapping(source = "locations.name", target = "name_location")
+  @Mapping(source = "events.eventId", target = "eventId")
+  @Mapping(source = "events.description",target = "descriptionEvent")
+  @Mapping(source = "categories.name", target = "nameCategory")
+  @Mapping(source = "locations.name", target = "nameLocation")
   @Mapping(source = "locations.address", target = "address")
-  @Mapping(source = "locations.description", target = "description_address")
+  @Mapping(source = "locations.description", target = "descriptionAddress")
   @Mapping(source = "events.feedbacks", target = "feedback")
   @Mapping(source = "events.registrations", target = "registrations")
   EventRegistrationResponse convertEventRegistrationMapper(
       Events events); //convert method getAllEventRegistration
 
-  @Mapping(source = "description_event", target = "description")
-  @Mapping(source = "event_image", target = "event_image")
-  @Mapping(source = "start_time", target = "start_time", dateFormat = "yyyy-MM-dd HH:mm:ss")
-  @Mapping(source = "end_time", target = "end_time", dateFormat = "yyyy-MM-dd HH:mm:ss")
+  @Mapping(source = "descriptionEvent", target = "description")
+  @Mapping(source = "eventImage", target = "eventImage")
+  @Mapping(source = "startTime", target = "startTime", dateFormat = "yyyy-MM-dd HH:mm:ss")
+  @Mapping(source = "endTime", target = "endTime", dateFormat = "yyyy-MM-dd HH:mm:ss")
   @Mapping(target = "dateTime", expression = "java(java.time.LocalDateTime.now())")
   @Mapping(target = "updateTime", expression = "java(java.time.LocalDateTime.now())")
   Events convertEventsEntityMapper(

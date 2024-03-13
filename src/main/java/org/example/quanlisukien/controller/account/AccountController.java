@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,13 +27,13 @@ public class AccountController {
     this.accountService = accountService;
   }
 
-  @GetMapping("/all")
+  @GetMapping()
   public ResponseEntity<?> getByAllAccount() {
     return ResponseEntity.ok(accountService.getByAllAccount());
   }
 
-  @GetMapping("/search/id")
-  public ResponseEntity<?> getByIdAccount(@RequestParam Long user_id) {
+  @GetMapping("/search/{user_id}")
+  public ResponseEntity<?> getByIdAccount(@PathVariable Long user_id) {
     return ResponseEntity.ok(accountService.getByIdAccount(user_id));
   }
 

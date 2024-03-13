@@ -7,7 +7,7 @@ public interface FeedbackService {
 
   Feedbacks createFeedback(FeedbackRequest feedbackRequest); //method them feedback event;
 
-  Feedbacks updateFeedback(Long feedback_id,FeedbackRequest feedbackRequest); //method update feedbacks
+  Feedbacks updateFeedback(Long feedbackId,FeedbackRequest feedbackRequest); //method update feedbacks
 
-  void deleteFeedback (Long feedback_id); //method xoa 1 feedback
+  void deleteFeedback (Long feedbackId); //method xoa 1 feedback
 }

@@ -28,7 +28,7 @@ public class RoleController {
   public ResponseEntity<?> createRole(@Valid @RequestBody RoleRequest roleRequest) {
     return ResponseEntity.ok(roleService.createRole(roleRequest));
   }
-  @GetMapping("/all")
+  @GetMapping()
   public ResponseEntity<?> findAll() {
     return ResponseEntity.ok(roleService.findByAllRole());
   }

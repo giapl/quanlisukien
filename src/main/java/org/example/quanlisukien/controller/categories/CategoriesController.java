@@ -30,7 +30,7 @@ public class CategoriesController {
     return ResponseEntity.ok(categoriesService.createCategories(categoriesRequest));
   }
 
-  @GetMapping("/all")
+  @GetMapping()
   public ResponseEntity<?> findByAllCategories() {
     return ResponseEntity.ok(categoriesService.findByAllCategories());
   }

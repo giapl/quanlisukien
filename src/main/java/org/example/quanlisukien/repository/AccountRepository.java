@@ -14,12 +14,11 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
   Optional<Account> findByUsername(
       @Param("username") String username); //lay du lieu ra dk la username
 
-  Boolean existsByUsername(
-      @Param("username") String username); //kiem tra username da ton tai hay ch
+  Boolean existsByUsername(String username); //kiem tra username da ton tai hay ch
 
-  Boolean existsByEmail(@Param("email") String email); //kiem tra email da ton tai hay ch
+  Boolean existsByEmail(String email); //kiem tra email da ton tai hay ch
 
   @Query(value = "select * from account where user_id =:user_id", nativeQuery = true)
-  Optional<Account> findByUserId(@Param("user_id") Long user_id); //lay ra theo dk user_id
+  Optional<Account> findByUserId(@Param("user_id") Long userId); //lay ra theo dk user_id
 
 }
