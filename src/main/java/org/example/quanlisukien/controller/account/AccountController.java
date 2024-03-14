@@ -32,9 +32,9 @@ public class AccountController {
     return ResponseEntity.ok(accountService.getByAllAccount());
   }
 
-  @GetMapping("/search/{user_id}")
-  public ResponseEntity<?> getByIdAccount(@PathVariable Long user_id) {
-    return ResponseEntity.ok(accountService.getByIdAccount(user_id));
+  @GetMapping("/search/{userId}")
+  public ResponseEntity<?> getByIdAccount(@PathVariable Long userId) {
+    return ResponseEntity.ok(accountService.getByIdAccount(userId));
   }
 
   @GetMapping("/search")
@@ -43,21 +43,21 @@ public class AccountController {
   }
 
   @DeleteMapping("/delete")
-  public ResponseEntity<?> deleteByIdAccount(@RequestParam Long user_id) {
-    accountService.deleteByIdAccount(user_id);
-    return ResponseEntity.ok("delete by id successful : " + user_id);
+  public ResponseEntity<?> deleteByIdAccount(@RequestParam Long userId) {
+    accountService.deleteByIdAccount(userId);
+    return ResponseEntity.ok("delete by id successful : " + userId);
   }
 
   @PutMapping("/update")
-  public ResponseEntity<?> updateByIdPassword(@RequestParam Long user_id, @RequestBody
+  public ResponseEntity<?> updateByIdPassword(@RequestParam Long userId, @RequestBody
   AccountRequest accountRequest) {
-    accountService.updateByIdPassword(user_id, accountRequest);
+    accountService.updateByIdPassword(userId, accountRequest);
     return ResponseEntity.ok("update by successful");
   }
 
   @PutMapping("/update/admin")
-  public ResponseEntity<?> updateAdminById(@RequestParam Long user_id ,@RequestBody AccountAdminRequest accountAdminRequest) {
-    return ResponseEntity.ok(accountService.updateAdminById(user_id,accountAdminRequest));
+  public ResponseEntity<?> updateAdminById(@RequestParam Long userId,@RequestBody AccountAdminRequest accountAdminRequest) {
+    return ResponseEntity.ok(accountService.updateAdminById(userId,accountAdminRequest));
   }
   @PostMapping("/create/admin")
   public ResponseEntity<?> createAccountAdmin(@Valid @RequestBody AccountAdminRequest accountAdminRequest) {

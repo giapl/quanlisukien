@@ -30,12 +30,12 @@ public class FeedbacksController {
   }
 
   @PutMapping("/update")
-  public ResponseEntity<?> updateFeedback(@RequestParam Long feedback_id, @RequestBody FeedbackRequest feedbackRequest) {
-    return ResponseEntity.ok(feedbackService.updateFeedback(feedback_id, feedbackRequest));
+  public ResponseEntity<?> updateFeedback(@RequestParam Long feedbackId, @RequestBody FeedbackRequest feedbackRequest) {
+    return ResponseEntity.ok(feedbackService.updateFeedback(feedbackId, feedbackRequest));
   }
-  @DeleteMapping("/delete/{feedback_id}")
-  public ResponseEntity<?> deleteFeedback(@PathVariable Long feedback_id) {
-    feedbackService.deleteFeedback(feedback_id);
+  @DeleteMapping("/delete/{feedbackId}")
+  public ResponseEntity<?> deleteFeedback(@PathVariable Long feedbackId) {
+    feedbackService.deleteFeedback(feedbackId);
     return ResponseEntity.ok("delete by id successful");
   }
 }

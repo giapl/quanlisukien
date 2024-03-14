@@ -34,14 +34,14 @@ public class RoleController {
   }
 
   @DeleteMapping("/delete")
-  public ResponseEntity<?> deleteByIdRole(@RequestParam Long role_id) {
-    roleService.deleteByIdRole(role_id);
+  public ResponseEntity<?> deleteByIdRole(@RequestParam Long roleId) {
+    roleService.deleteByIdRole(roleId);
     return ResponseEntity.ok("delete role by id successful");
   }
 
   @PutMapping("/update")
-  public ResponseEntity<?> updateByIdRole(@RequestParam Long role_id , @RequestBody RoleRequest roleRequest) {
-    return ResponseEntity.ok(roleService.updateByIdRole(role_id, roleRequest));
+  public ResponseEntity<?> updateByIdRole(@RequestParam Long roleId, @RequestBody RoleRequest roleRequest) {
+    return ResponseEntity.ok(roleService.updateByIdRole(roleId, roleRequest));
   }
 
 }

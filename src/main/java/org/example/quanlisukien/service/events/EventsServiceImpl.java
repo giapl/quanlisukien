@@ -1,5 +1,8 @@
 package org.example.quanlisukien.service.events;
 
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
+import jakarta.persistence.criteria.Predicate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,15 +18,13 @@ import org.example.quanlisukien.exception.InternalServerException;
 import org.example.quanlisukien.exception.NotFoundException;
 import org.example.quanlisukien.mapper.IEventsMapper;
 import org.example.quanlisukien.repository.CategoriesRepository;
-import org.example.quanlisukien.repository.EventSpecification;
 import org.example.quanlisukien.repository.EventsRepository;
 import org.example.quanlisukien.repository.LocationsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -159,11 +160,37 @@ public class EventsServiceImpl implements EventsService {
   }
 
   @Override
-  public Page<EventsResponse> search(int offSize, Pageable pageable,
-      EventSearchRequest eventSearchRequest) {
-    EventSpecification specification = new EventSpecification(eventSearchRequest);
-    Page<Events> events = eventsRepository.findAll(specification,
-        PageRequest.of(offSize, 10).withSort(Sort.by("dateTime").descending()));
+  public Specification<Events> createEventSpec(EventSearchRequest search) {
+    return (root, query, criteriaBuilder) -> {
+
+      List<Predicate> predicates = new ArrayList<>();
+
+      Join<Events, Categories> eventJoinCategories = root.join("categories", JoinType.INNER);
+      Join<Events, Locations> eventsLocationsJoin = root.join("locations", JoinType.INNER);
+
+      if (search.getNameEvent() != null && !search.getNameEvent().isEmpty()) {
+        predicates.add(
+            criteriaBuilder.like(root.get("nameEvent"), "%" + search.getNameEvent() + "%"));
+      }
+
+      if (search.getNameCategory() != null && !search.getNameCategory().isEmpty()) {
+        predicates.add(
+            criteriaBuilder.like(eventJoinCategories.get("name"), search.getNameCategory()));
+      }
+
+      if (search.getNameLocation() != null && !search.getNameLocation().isEmpty()) {
+        predicates.add(
+            criteriaBuilder.like(eventsLocationsJoin.get("name"), search.getNameLocation()));
+      }
+
+      return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+    };
+  }
+
+  @Override
+  public Page<EventsResponse> search(Pageable pageable, EventSearchRequest eventSearchRequest) {
+    Specification<Events> spec = Specification.where(createEventSpec(eventSearchRequest));
+    Page<Events> events = eventsRepository.findAll(spec,pageable);
     Page<EventsResponse> eventsResponses = events.map(events1 -> {
       EventsResponse eventsResponse = iEventsMapper.convertEntityEventsMapper(events1);
       eventsResponse.setNumberFeedback((long) events1.getFeedbacks().size());
@@ -171,5 +198,5 @@ public class EventsServiceImpl implements EventsService {
     });
     return eventsResponses;
   }
-
 }
+

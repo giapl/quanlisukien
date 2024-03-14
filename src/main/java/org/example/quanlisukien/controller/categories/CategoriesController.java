@@ -36,15 +36,15 @@ public class CategoriesController {
   }
 
   @DeleteMapping("/delete")
-  public ResponseEntity<?> deleteByIdCategories(@RequestParam Long category_id) {
-    categoriesService.deleteByIdCategories(category_id);
+  public ResponseEntity<?> deleteByIdCategories(@RequestParam Long categoryId) {
+    categoriesService.deleteByIdCategories(categoryId);
     return ResponseEntity.ok("delete By id successful");
   }
 
   @PutMapping("/update")
-  public ResponseEntity<?> updateByIdCategories(@RequestParam Long category_id,
+  public ResponseEntity<?> updateByIdCategories(@RequestParam Long categoryId,
       @RequestBody CategoriesRequest categoriesRequest) {
     return ResponseEntity.ok(
-        categoriesService.updateByIdCategories(category_id, categoriesRequest));
+        categoriesService.updateByIdCategories(categoryId, categoriesRequest));
   }
 }

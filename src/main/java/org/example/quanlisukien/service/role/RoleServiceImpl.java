@@ -33,10 +33,7 @@ public class RoleServiceImpl implements RoleService {
 
   @Override
   public Role createRole(RoleRequest roleRequest) {
-    Role role = new Role();
-    role.setRoleName(roleRequest.getRoleName());
-    role.setDateTime(LocalDateTime.now());
-    role.setUpdateTime(LocalDateTime.now());
+    Role role = iRoleMapper.roleMapper(roleRequest); //map request sang entity
     try {
       return roleRepository.save(role);
     } catch (DataAccessException ex) {

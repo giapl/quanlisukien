@@ -107,7 +107,7 @@ public class SecurityConfig {
             .requestMatchers(new AntPathRequestMatcher("/api/v1/events/search/{{offSize}}",
                 HttpMethod.POST.name())).hasAnyAuthority("ADMIN", "USER")
             .requestMatchers(
-                new AntPathRequestMatcher("/api/v1/events/search/{{offSize}}",
+                new AntPathRequestMatcher("/api/v1/events/search",
                     HttpMethod.POST.name()))
             .hasAnyAuthority("ADMIN", "USER")
             .anyRequest()

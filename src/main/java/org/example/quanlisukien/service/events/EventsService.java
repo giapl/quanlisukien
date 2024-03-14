@@ -8,6 +8,7 @@ import org.example.quanlisukien.data.response.EventRegistrationResponse;
 import org.example.quanlisukien.data.response.EventsResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 public interface EventsService {
 
@@ -20,6 +21,8 @@ public interface EventsService {
   Page<EventRegistrationResponse> getAllEventRegistration(
       Pageable pageable); //method admin getAll event and feedback and registrations
 
-  Page<EventsResponse> search(int offSize, Pageable pageable,
+  Specification<Events> createEventSpec(EventSearchRequest search); // create search and filter
+
+  Page<EventsResponse> search(Pageable pageable,
       EventSearchRequest eventSearchRequest); //method search and filter
 }

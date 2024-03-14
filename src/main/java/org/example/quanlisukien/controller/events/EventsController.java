@@ -6,14 +6,12 @@ import org.example.quanlisukien.data.request.EventSearchRequest;
 import org.example.quanlisukien.service.events.EventsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.SortDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,15 +36,15 @@ public class EventsController {
   }
 
   @DeleteMapping("/delete")
-  public ResponseEntity<?> deleteByIdEvent(@RequestParam Long event_id) {
-    eventsService.deleteByIdEvent(event_id);
+  public ResponseEntity<?> deleteByIdEvent(@RequestParam Long eventId) {
+    eventsService.deleteByIdEvent(eventId);
     return ResponseEntity.ok("delete event id successful");
   }
 
   @PutMapping("/update")
-  public ResponseEntity<?> updateByIdEvents(@RequestParam Long event_id, @RequestBody
+  public ResponseEntity<?> updateByIdEvents(@RequestParam Long eventId, @RequestBody
   EventRequest eventRequest) {
-    eventsService.updateByIdEvents(event_id, eventRequest);
+    eventsService.updateByIdEvents(eventId, eventRequest);
     return ResponseEntity.ok("update event successful admin");
   }
 
@@ -58,9 +56,11 @@ public class EventsController {
     return ResponseEntity.ok(eventsService.getAllEventRegistration(pageable));
   }
 
-  @PostMapping("/search/{offSize}")
-  public ResponseEntity<?> searchAndFilter(@PathVariable int offSize, Pageable pageable,
+  @PostMapping("/search")
+  public ResponseEntity<?> searchAndFilter(
+      @PageableDefault(page = 0, size = 20) @SortDefault.SortDefaults(@SortDefault(sort = "dateTime",
+          direction = Direction.DESC)) Pageable pageable,
       @RequestBody EventSearchRequest eventSearchRequest) {
-    return ResponseEntity.ok(eventsService.search(offSize, pageable, eventSearchRequest));
+    return ResponseEntity.ok(eventsService.search(pageable, eventSearchRequest));
   }
 }
