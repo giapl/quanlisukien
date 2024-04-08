@@ -1,6 +1,7 @@
 package org.example.quanlisukien.data.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -10,7 +11,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class EventRegistrationResponse {
+public class EventRegistrationResponse implements Serializable {
+
+  private static final long serialVersionUID = 1L;
 
   private Long eventId;
 

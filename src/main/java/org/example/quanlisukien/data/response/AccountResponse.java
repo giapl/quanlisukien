@@ -1,6 +1,7 @@
 package org.example.quanlisukien.data.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +12,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class AccountResponse {
+public class AccountResponse implements Serializable {
+
+  private static final long serialVersionUID = 1L;
 
   private String userId;
   private String username;

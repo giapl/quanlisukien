@@ -10,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -23,8 +24,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @Entity
 @Table(name = "categories")
-public class Categories {
+public class Categories implements Serializable {
 
+  private static final long serialVersionUID = 1L;
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "category_id")
@@ -43,6 +45,6 @@ public class Categories {
   private LocalDateTime updateTime;
 
   @JsonManagedReference
-  @OneToMany(mappedBy = "categories" , cascade = CascadeType.ALL , orphanRemoval = true)
+  @OneToMany(mappedBy = "categories", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Events> events;
 }

@@ -14,6 +14,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,8 +33,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Builder
 @Entity
 @Table(name = "Account")
-public class Account implements UserDetails {
+public class Account implements UserDetails, Serializable {
 
+  private static final long serialVersionUID = 1L;
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "user_id")
@@ -59,12 +61,12 @@ public class Account implements UserDetails {
   private Role role;
 
   @JsonManagedReference
-  @OneToMany(mappedBy = "account",cascade = CascadeType.ALL,orphanRemoval = true)
+  @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Feedbacks> feedbacks;
 
   //lien ket voi dang ki su kien
   @JsonManagedReference
-  @OneToMany(mappedBy = "account",orphanRemoval = true,cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "account", orphanRemoval = true, cascade = CascadeType.ALL)
   private List<Registrations> registrations;
 
   @Override

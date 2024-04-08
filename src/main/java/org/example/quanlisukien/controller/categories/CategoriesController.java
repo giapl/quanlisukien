@@ -1,6 +1,8 @@
 package org.example.quanlisukien.controller.categories;
 
+
 import jakarta.validation.Valid;
+import java.io.IOException;
 import org.example.quanlisukien.data.request.CategoriesRequest;
 import org.example.quanlisukien.service.categories.CategoriesService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +33,8 @@ public class CategoriesController {
   }
 
   @GetMapping()
-  public ResponseEntity<?> findByAllCategories() {
+  public ResponseEntity<?> findByAllCategories()
+      throws IOException {
     return ResponseEntity.ok(categoriesService.findByAllCategories());
   }
 

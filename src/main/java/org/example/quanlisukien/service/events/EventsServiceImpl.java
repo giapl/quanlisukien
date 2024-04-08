@@ -21,6 +21,9 @@ import org.example.quanlisukien.repository.CategoriesRepository;
 import org.example.quanlisukien.repository.EventsRepository;
 import org.example.quanlisukien.repository.LocationsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -52,6 +55,7 @@ public class EventsServiceImpl implements EventsService {
   }
 
   @Override
+  @CacheEvict(value = "eventRegistration", allEntries = true)
   public Events createEvent(EventRequest eventRequest) {
 
     Categories categories = categoriesRepository.findByName(eventRequest.getNameCategory())
@@ -81,6 +85,7 @@ public class EventsServiceImpl implements EventsService {
   }
 
   @Override
+  @CacheEvict(value = "eventRegistration", allEntries = true)
   public void deleteByIdEvent(Long eventId) {
     if (eventsRepository.existsById(eventId)) { //kiem tra xem id co ton tai ko
       eventsRepository.deleteById(eventId);
@@ -90,6 +95,7 @@ public class EventsServiceImpl implements EventsService {
   }
 
   @Override
+  @CachePut(value = "eventRegistration")
   public Events updateByIdEvents(Long eventId, EventRequest eventRequest) {
     Optional<Events> optionalEvents = eventsRepository.findById(eventId);
     if (optionalEvents.isPresent()) {
@@ -148,6 +154,7 @@ public class EventsServiceImpl implements EventsService {
   }
 
   @Override
+  @Cacheable(value = "eventRegistration")
   public Page<EventRegistrationResponse> getAllEventRegistration(Pageable pageable) {
     Page<Events> events = eventsRepository.findAll(pageable);
     Page<EventRegistrationResponse> eventRegistrationResponses = events.map(events1 -> {
@@ -190,7 +197,7 @@ public class EventsServiceImpl implements EventsService {
   @Override
   public Page<EventsResponse> search(Pageable pageable, EventSearchRequest eventSearchRequest) {
     Specification<Events> spec = Specification.where(createEventSpec(eventSearchRequest));
-    Page<Events> events = eventsRepository.findAll(spec,pageable);
+    Page<Events> events = eventsRepository.findAll(spec, pageable);
     Page<EventsResponse> eventsResponses = events.map(events1 -> {
       EventsResponse eventsResponse = iEventsMapper.convertEntityEventsMapper(events1);
       eventsResponse.setNumberFeedback((long) events1.getFeedbacks().size());

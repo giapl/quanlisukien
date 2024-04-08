@@ -2,6 +2,7 @@ package org.example.quanlisukien.data.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,7 +11,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class EventRequest {
+public class EventRequest implements Serializable {
+
+  private static final long serialVersionUID = 1L;
 
   @NotBlank(message = "không được để trống tên sự kiện")
   private String nameEvent;

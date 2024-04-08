@@ -1,5 +1,9 @@
 package org.example.quanlisukien.service.categories;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -13,6 +17,7 @@ import org.example.quanlisukien.mapper.ICategoriesMapper;
 import org.example.quanlisukien.repository.CategoriesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,11 +28,18 @@ public class CategoriesServiceImpl implements CategoriesService {
   private final CategoriesRepository categoriesRepository;
   private final ICategoriesMapper categoriesMapper;
 
+  private final ObjectMapper objectMapper;
+
+  private final RedisTemplate redisTemplate;
+
   @Autowired
   public CategoriesServiceImpl(CategoriesRepository categoriesRepository,
-      ICategoriesMapper categoriesMapper) {
+      ICategoriesMapper categoriesMapper,
+      ObjectMapper objectMapper, RedisTemplate redisTemplate) {
     this.categoriesRepository = categoriesRepository;
     this.categoriesMapper = categoriesMapper;
+    this.objectMapper = objectMapper;
+    this.redisTemplate = redisTemplate;
   }
 
   @Override
@@ -41,12 +53,30 @@ public class CategoriesServiceImpl implements CategoriesService {
   }
 
   @Override
-  public List<CategoriesResponse> findByAllCategories() {
-    return categoriesRepository.findAll()
-        .stream()
+  public List<CategoriesResponse> findByAllCategories() throws JsonProcessingException {
+    String categoriesAsString = (String) redisTemplate.opsForValue().get("categoriesAll");
+
+    // Cache hit
+    if (categoriesAsString != null) {
+      TypeReference<List<CategoriesResponse>> mapType = new TypeReference<>() {};
+      List<CategoriesResponse> categoriesList = objectMapper.readValue(categoriesAsString, mapType);
+      return categoriesList;
+    }
+
+    // Cache miss
+    List<Categories> categoriesList = categoriesRepository.findAll();
+    List<CategoriesResponse> categoriesResponses = categoriesList.stream()
         .map(categoriesMapper::convertEntityCategoriesMapper)
         .collect(Collectors.toList());
+
+    String categoriesAsJsonString = objectMapper.writeValueAsString(categoriesResponses);
+    // luu cache vao redis
+    redisTemplate.opsForValue()
+        .set("categoriesAll", categoriesAsJsonString, Duration.ofSeconds(60));
+
+    return categoriesResponses;
   }
+
 
   @Override
   public void deleteByIdCategories(Long categoryId) {
