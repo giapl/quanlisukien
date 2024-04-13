@@ -46,6 +46,7 @@ public class CategoriesServiceImpl implements CategoriesService {
   public Categories createCategories(CategoriesRequest categoriesRequest) {
     Categories categories = categoriesMapper.categoriesMapper(categoriesRequest);
     try {
+      redisTemplate.delete("categoriesAll");
       return categoriesRepository.save(categories);
     } catch (DataAccessException ex) {
       throw new InternalServerException("error save database");
@@ -81,6 +82,7 @@ public class CategoriesServiceImpl implements CategoriesService {
   @Override
   public void deleteByIdCategories(Long categoryId) {
     if (categoriesRepository.existsById(categoryId)) {
+      redisTemplate.delete("categoriesAll");
       categoriesRepository.deleteById(categoryId);
     } else {
       throw new NotFoundException("no id delete categories admin");
@@ -99,6 +101,7 @@ public class CategoriesServiceImpl implements CategoriesService {
         categories.setDescription(categoriesRequest.getDescription());
       }
       categories.setUpdateTime(LocalDateTime.now());
+      redisTemplate.delete("categoriesAll");
       return categoriesRepository.save(categories);
     } else {
       throw new NotFoundException("no id update categories database admin");

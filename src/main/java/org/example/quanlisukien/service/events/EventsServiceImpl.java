@@ -22,7 +22,6 @@ import org.example.quanlisukien.repository.EventsRepository;
 import org.example.quanlisukien.repository.LocationsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
@@ -95,7 +94,7 @@ public class EventsServiceImpl implements EventsService {
   }
 
   @Override
-  @CachePut(value = "eventRegistration")
+  @CacheEvict(value = "eventRegistration",allEntries = true)
   public Events updateByIdEvents(Long eventId, EventRequest eventRequest) {
     Optional<Events> optionalEvents = eventsRepository.findById(eventId);
     if (optionalEvents.isPresent()) {

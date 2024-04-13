@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class CategoriesRequest {
 
   @NotBlank(message = "không được để trống name_event")
-  @Size(min = 1, max = 200,message = "nhập tên danh mục phải có độ dài lớn hơn 1")
+  @Size(min = 1, max = 200, message = "nhập tên danh mục phải có độ dài lớn hơn 1")
   private String name;
 
   @NotBlank(message = "không được để trống mô tả")
