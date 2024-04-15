@@ -8,5 +8,5 @@ public interface RegistrationService {
   Registrations registrationEvent(
       RegistrationRequest registrationRequest); //method dang ky su kien
 
-
+  void deleteRegistration(Long registrationsId); //method delete registrations
 }

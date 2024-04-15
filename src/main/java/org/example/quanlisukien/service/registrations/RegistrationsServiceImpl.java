@@ -53,13 +53,22 @@ public class RegistrationsServiceImpl implements RegistrationService {
       registrations.setUsername(account.getUsername());
       registrations.setDateTime(LocalDateTime.now());
 
-      try{
+      try {
         return registrationsRepository.save(registrations);
       } catch (DataAccessException ex) {
         throw new InternalServerException("no save database");
       }
     } else {
       throw new NotFoundException("no event_id or user_id");
+    }
+  }
+
+  @Override
+  public void deleteRegistration(Long registrationsId) {
+    if (registrationsRepository.existsById(registrationsId)) {
+      registrationsRepository.deleteById(registrationsId);
+    } else {
+      throw new NotFoundException("no registrations found");
     }
   }
 }

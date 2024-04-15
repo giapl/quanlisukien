@@ -42,7 +42,8 @@ public class SecurityConfig {
                 new AntPathRequestMatcher("/api/v1/accounts", HttpMethod.GET.name()))
             .hasAuthority("ADMIN")
             .requestMatchers(
-                new AntPathRequestMatcher("/api/v1/accounts/search/{{user_id}}", HttpMethod.GET.name()))
+                new AntPathRequestMatcher("/api/v1/accounts/search/{{user_id}}",
+                    HttpMethod.GET.name()))
             .hasAuthority("ADMIN")
             .requestMatchers(
                 new AntPathRequestMatcher("/api/v1/accounts/search", HttpMethod.GET.name()))
@@ -110,6 +111,9 @@ public class SecurityConfig {
                 new AntPathRequestMatcher("/api/v1/events/search",
                     HttpMethod.POST.name()))
             .hasAnyAuthority("ADMIN", "USER")
+            .requestMatchers(
+                new AntPathRequestMatcher("/api/v1/registrations/delete/{{registrationsId}}",
+                    HttpMethod.DELETE.name())).hasAnyAuthority("ADMIN","USER")
             .anyRequest()
             .denyAll())
         .httpBasic(Customizer.withDefaults());
