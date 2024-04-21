@@ -113,7 +113,10 @@ public class SecurityConfig {
             .hasAnyAuthority("ADMIN", "USER")
             .requestMatchers(
                 new AntPathRequestMatcher("/api/v1/registrations/delete/{{registrationsId}}",
-                    HttpMethod.DELETE.name())).hasAnyAuthority("ADMIN","USER")
+                    HttpMethod.DELETE.name())).hasAnyAuthority("ADMIN", "USER")
+            .requestMatchers(
+                new AntPathRequestMatcher("/api/v1/emails/send", HttpMethod.POST.name()))
+            .hasAuthority("ADMIN")
             .anyRequest()
             .denyAll())
         .httpBasic(Customizer.withDefaults());

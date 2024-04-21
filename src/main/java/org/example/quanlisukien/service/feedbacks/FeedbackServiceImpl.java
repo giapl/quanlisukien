@@ -1,17 +1,18 @@
 package org.example.quanlisukien.service.feedbacks;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 import org.example.quanlisukien.data.entity.Account;
 import org.example.quanlisukien.data.entity.Events;
 import org.example.quanlisukien.data.entity.Feedbacks;
 import org.example.quanlisukien.data.request.FeedbackRequest;
 import org.example.quanlisukien.exception.InternalServerException;
 import org.example.quanlisukien.exception.NotFoundException;
+import org.example.quanlisukien.mapper.IFeedbackMapper;
 import org.example.quanlisukien.repository.AccountRepository;
 import org.example.quanlisukien.repository.EventsRepository;
 import org.example.quanlisukien.repository.FeedbacksRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,62 +27,62 @@ public class FeedbackServiceImpl implements FeedbackService {
 
   private final AccountRepository accountRepository;
 
+  private final IFeedbackMapper iFeedbackMapper;
+
+
   @Autowired
   public FeedbackServiceImpl(FeedbacksRepository feedbacksRepository,
-      EventsRepository eventsRepository, AccountRepository accountRepository) {
+      EventsRepository eventsRepository, AccountRepository accountRepository,
+      IFeedbackMapper iFeedbackMapper) {
     this.feedbacksRepository = feedbacksRepository;
     this.eventsRepository = eventsRepository;
     this.accountRepository = accountRepository;
+    this.iFeedbackMapper = iFeedbackMapper;
   }
 
   @Override
+  @CacheEvict(value = "eventRegistration", allEntries = true)
   public Feedbacks createFeedback(FeedbackRequest feedbackRequest) {
-    Optional<Account> account = accountRepository.findById(feedbackRequest.getUserId());
-    Optional<Events> events = eventsRepository.findById(feedbackRequest.getEventId());
-    if (account.isPresent() && events.isPresent()) {
-      Account account1 = account.get();
-      Events events1 = events.get();
+    Account account = accountRepository.findById(feedbackRequest.getUserId())
+        .orElseThrow(() -> new NotFoundException("no id account"));
+    Events events = eventsRepository.findById(feedbackRequest.getEventId())
+        .orElseThrow(() -> new NotFoundException("no id event"));
 
-      Feedbacks feedbacks = new Feedbacks();
-      feedbacks.setFeedbackContent(feedbackRequest.getFeedbackContent());
-      feedbacks.setFeedbackImage(feedbackRequest.getFeedbackImage());
-      feedbacks.setAccount(account1);
-      feedbacks.setEvents(events1);
-      feedbacks.setDateTime(LocalDateTime.now());
-      feedbacks.setUpdateTime(LocalDateTime.now());
+    Feedbacks feedbacks = iFeedbackMapper.toFeedbacks(
+        feedbackRequest); //mapper feedbackRequest sang feedbacks
 
-      feedbacks.setUsername(account1.getUsername());
-      try {
-        return feedbacksRepository.save(feedbacks);
-      } catch (DataAccessException ex) {
-        throw new InternalServerException("no save database");
-      }
-    } else {
-      throw new NotFoundException("no user_id and event_id");
+    feedbacks.setAccount(account);
+    feedbacks.setEvents(events);
+    feedbacks.setUsername(account.getUsername());
+    try {
+      return feedbacksRepository.save(feedbacks);
+    } catch (DataAccessException ex) {
+      throw new InternalServerException("no save database");
     }
   }
 
   @Override
   public Feedbacks updateFeedback(Long feedbackId, FeedbackRequest feedbackRequest) {
-    Optional<Feedbacks> feedbacksOptional = feedbacksRepository.findById(feedbackId);
-    if (feedbacksOptional.isPresent()) {
-      Feedbacks feedbacks = feedbacksOptional.get();
 
-      //check user_id va event_id co quyen sua feedback hay ko
-      if (feedbacks.getEvents().getEventId().equals(feedbackRequest.getEventId())
-          && feedbacks.getAccount().getUserId().equals(feedbackRequest.getUserId())) {
+    Feedbacks feedbacks = feedbacksRepository.findById(feedbackId)
+        .orElseThrow(() -> new NotFoundException("No ID feedback"));
 
-        if (feedbackRequest.getFeedbackContent() != null) {
-          feedbacks.setFeedbackContent(feedbackRequest.getFeedbackContent());
-        }
+    //check user_id va event_id co quyen sua feedback hay ko
+    if (feedbacks.getEvents().getEventId().equals(feedbackRequest.getEventId())
+        && feedbacks.getAccount().getUserId().equals(feedbackRequest.getUserId())) {
 
-        if (feedbackRequest.getFeedbackImage() != null) {
-          feedbacks.setFeedbackImage(feedbackRequest.getFeedbackImage());
-        }
-
+      if (feedbackRequest.getFeedbackContent() != null && !feedbackRequest.getFeedbackContent()
+          .isEmpty()) {
+        feedbacks.setFeedbackContent(feedbackRequest.getFeedbackContent());
         feedbacks.setUpdateTime(LocalDateTime.now());
-        return feedbacksRepository.save(feedbacks);
       }
+
+      if (feedbackRequest.getFeedbackImage() != null && !feedbackRequest.getFeedbackImage()
+          .isEmpty()) {
+        feedbacks.setFeedbackImage(feedbackRequest.getFeedbackImage());
+        feedbacks.setUpdateTime(LocalDateTime.now());
+      }
+      return feedbacksRepository.save(feedbacks);
     }
     throw new NotFoundException("no update feedback");
   }
@@ -89,7 +90,7 @@ public class FeedbackServiceImpl implements FeedbackService {
   @Override
   public void deleteFeedback(Long feedbackId) {
 
-    if(feedbacksRepository.existsById(feedbackId)) {
+    if (feedbacksRepository.existsById(feedbackId)) {
       feedbacksRepository.deleteById(feedbackId);
     } else {
       throw new NotFoundException("no id delete feedback");

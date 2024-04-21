@@ -30,7 +30,8 @@ public class CustomerException {
   @ExceptionHandler(MethodArgumentNotValidException.class)
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   public ErrorResponse validationException(MethodArgumentNotValidException ex) {
-    List<String> errorMessages = ex.getBindingResult().getFieldErrors().stream()
+    List<String> errorMessages = ex.getBindingResult().getFieldErrors()
+        .stream()
         .map(FieldError::getDefaultMessage)
         .collect(Collectors.toList());
     String errorMessage = String.join(", ", errorMessages);

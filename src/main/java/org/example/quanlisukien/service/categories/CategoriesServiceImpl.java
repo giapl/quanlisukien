@@ -59,7 +59,8 @@ public class CategoriesServiceImpl implements CategoriesService {
 
     // Cache hit
     if (categoriesAsString != null) {
-      TypeReference<List<CategoriesResponse>> mapType = new TypeReference<>() {};
+      TypeReference<List<CategoriesResponse>> mapType = new TypeReference<>() {
+      };
       List<CategoriesResponse> categoriesList = objectMapper.readValue(categoriesAsString, mapType);
       return categoriesList;
     }
@@ -91,20 +92,17 @@ public class CategoriesServiceImpl implements CategoriesService {
 
   @Override
   public Categories updateByIdCategories(Long categoryId, CategoriesRequest categoriesRequest) {
-    Optional<Categories> optionalCategories = categoriesRepository.findById(categoryId);
-    if (optionalCategories.isPresent()) {
-      Categories categories = optionalCategories.get();
-      if (categoriesRequest.getName() != null) {
-        categories.setName(categoriesRequest.getName());
-      }
-      if (categoriesRequest.getDescription() != null) {
-        categories.setDescription(categoriesRequest.getDescription());
-      }
+    Categories categories = categoriesRepository.findById(categoryId)
+        .orElseThrow(() -> new NotFoundException("No ID Categories"));
+    if (categoriesRequest.getName() != null && !categoriesRequest.getName().isEmpty()) {
+      categories.setName(categoriesRequest.getName());
       categories.setUpdateTime(LocalDateTime.now());
-      redisTemplate.delete("categoriesAll");
-      return categoriesRepository.save(categories);
-    } else {
-      throw new NotFoundException("no id update categories database admin");
     }
+    if (categoriesRequest.getDescription() != null) {
+      categories.setDescription(categoriesRequest.getDescription());
+      categories.setUpdateTime(LocalDateTime.now());
+    }
+    redisTemplate.delete("categoriesAll");
+    return categoriesRepository.save(categories);
   }
 }
