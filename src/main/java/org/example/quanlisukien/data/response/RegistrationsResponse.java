@@ -22,7 +22,7 @@ public class RegistrationsResponse implements Serializable {
 
   private String email;
 
-  private Long phoneNumber;
+  private String phoneNumber;
 
   private String joinEvent;
 

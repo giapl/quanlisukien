@@ -31,7 +31,7 @@ public class RegistrationRequest {
 
   @NotNull(message = "không được để trống số điện thoại")
   @Min(value = 10,message = "nhập đúng định dạng số điện thoại")
-  private Long phoneNumber;
+  private String phoneNumber;
 
   private String joinEvent;
 

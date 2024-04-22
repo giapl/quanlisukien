@@ -41,7 +41,7 @@ public class Registrations implements Serializable {
   private String email;
 
   @Column(name = "phone_number")
-  private Long phoneNumber;
+  private String phoneNumber;
 
   @Column(name = "join_event")
   private String joinEvent;
