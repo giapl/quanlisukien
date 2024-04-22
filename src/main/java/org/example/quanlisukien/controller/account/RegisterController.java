@@ -1,6 +1,7 @@
 package org.example.quanlisukien.controller.account;
 
 import jakarta.validation.Valid;
+import org.example.quanlisukien.data.entity.Account;
 import org.example.quanlisukien.data.request.AccountRequest;
 import org.example.quanlisukien.service.account.AccountRegisterService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class RegisterController {
   }
 
   @PostMapping("/register")
-  public ResponseEntity<?> register(@Valid @RequestBody AccountRequest accountRequest) {
+  public ResponseEntity<Account> register(@Valid @RequestBody AccountRequest accountRequest) {
     return ResponseEntity.ok(accountRegisterService.register(accountRequest));
   }
 

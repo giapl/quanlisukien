@@ -1,6 +1,7 @@
 package org.example.quanlisukien.controller.registrations;
 
 import jakarta.validation.Valid;
+import org.example.quanlisukien.data.entity.Registrations;
 import org.example.quanlisukien.data.request.RegistrationRequest;
 import org.example.quanlisukien.service.registrations.RegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +25,11 @@ public class RegistrationsController {
     this.registrationService = registrationService;
   }
   @PostMapping("/event")
-  public ResponseEntity<?>  registrationEvent(@Valid @RequestBody RegistrationRequest registrationRequest) {
+  public ResponseEntity<Registrations>  registrationEvent(@Valid @RequestBody RegistrationRequest registrationRequest) {
     return ResponseEntity.ok(registrationService.registrationEvent(registrationRequest));
   }
   @DeleteMapping("/delete/{registrationsId}")
-  public ResponseEntity<?> deleteRegistration(@PathVariable Long registrationsId) {
+  public ResponseEntity<String> deleteRegistration(@PathVariable Long registrationsId) {
     registrationService.deleteRegistration(registrationsId);
     return ResponseEntity.ok("Deleted successfully");
   }

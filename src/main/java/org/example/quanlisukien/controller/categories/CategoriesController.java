@@ -3,7 +3,10 @@ package org.example.quanlisukien.controller.categories;
 
 import jakarta.validation.Valid;
 import java.io.IOException;
+import java.util.List;
+import org.example.quanlisukien.data.entity.Categories;
 import org.example.quanlisukien.data.request.CategoriesRequest;
+import org.example.quanlisukien.data.response.CategoriesResponse;
 import org.example.quanlisukien.service.categories.CategoriesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,24 +31,24 @@ public class CategoriesController {
   }
 
   @PostMapping("/create")
-  public ResponseEntity<?> createCategories(@Valid @RequestBody CategoriesRequest categoriesRequest) {
+  public ResponseEntity<Categories> createCategories(@Valid @RequestBody CategoriesRequest categoriesRequest) {
     return ResponseEntity.ok(categoriesService.createCategories(categoriesRequest));
   }
 
   @GetMapping()
-  public ResponseEntity<?> findByAllCategories()
+  public ResponseEntity<List<CategoriesResponse>> findByAllCategories()
       throws IOException {
     return ResponseEntity.ok(categoriesService.findByAllCategories());
   }
 
   @DeleteMapping("/delete")
-  public ResponseEntity<?> deleteByIdCategories(@RequestParam Long categoryId) {
+  public ResponseEntity<String> deleteByIdCategories(@RequestParam Long categoryId) {
     categoriesService.deleteByIdCategories(categoryId);
     return ResponseEntity.ok("delete By id successful");
   }
 
   @PutMapping("/update")
-  public ResponseEntity<?> updateByIdCategories(@RequestParam Long categoryId,
+  public ResponseEntity<Categories> updateByIdCategories(@RequestParam Long categoryId,
       @RequestBody CategoriesRequest categoriesRequest) {
     return ResponseEntity.ok(
         categoriesService.updateByIdCategories(categoryId, categoriesRequest));

@@ -1,5 +1,6 @@
 package org.example.quanlisukien.controller.feedbacks;
 
+import org.example.quanlisukien.data.entity.Feedbacks;
 import org.example.quanlisukien.data.request.FeedbackRequest;
 import org.example.quanlisukien.service.feedbacks.FeedbackService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,16 +26,16 @@ public class FeedbacksController {
   }
 
   @PostMapping("/create")
-  public ResponseEntity<?> createFeedback(@RequestBody FeedbackRequest feedbackRequest) {
+  public ResponseEntity<Feedbacks> createFeedback(@RequestBody FeedbackRequest feedbackRequest) {
     return ResponseEntity.ok(feedbackService.createFeedback(feedbackRequest));
   }
 
   @PutMapping("/update")
-  public ResponseEntity<?> updateFeedback(@RequestParam Long feedbackId, @RequestBody FeedbackRequest feedbackRequest) {
+  public ResponseEntity<Feedbacks> updateFeedback(@RequestParam Long feedbackId, @RequestBody FeedbackRequest feedbackRequest) {
     return ResponseEntity.ok(feedbackService.updateFeedback(feedbackId, feedbackRequest));
   }
   @DeleteMapping("/delete/{feedbackId}")
-  public ResponseEntity<?> deleteFeedback(@PathVariable Long feedbackId) {
+  public ResponseEntity<String> deleteFeedback(@PathVariable Long feedbackId) {
     feedbackService.deleteFeedback(feedbackId);
     return ResponseEntity.ok("delete by id successful");
   }

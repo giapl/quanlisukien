@@ -1,10 +1,14 @@
 package org.example.quanlisukien.controller.events;
 
 import jakarta.validation.Valid;
+import org.example.quanlisukien.data.entity.Events;
 import org.example.quanlisukien.data.request.EventRequest;
 import org.example.quanlisukien.data.request.EventSearchRequest;
+import org.example.quanlisukien.data.response.EventRegistrationResponse;
+import org.example.quanlisukien.data.response.EventsResponse;
 import org.example.quanlisukien.service.events.EventsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
@@ -31,25 +35,24 @@ public class EventsController {
   }
 
   @PostMapping("/create")
-  public ResponseEntity<?> createEvent(@Valid @RequestBody EventRequest eventRequest) {
+  public ResponseEntity<Events> createEvent(@Valid @RequestBody EventRequest eventRequest) {
     return ResponseEntity.ok(eventsService.createEvent(eventRequest));
   }
 
   @DeleteMapping("/delete")
-  public ResponseEntity<?> deleteByIdEvent(@RequestParam Long eventId) {
+  public ResponseEntity<String> deleteByIdEvent(@RequestParam Long eventId) {
     eventsService.deleteByIdEvent(eventId);
     return ResponseEntity.ok("delete event id successful");
   }
 
   @PutMapping("/update")
-  public ResponseEntity<?> updateByIdEvents(@RequestParam Long eventId, @RequestBody
+  public ResponseEntity<Events> updateByIdEvents(@RequestParam Long eventId, @RequestBody
   EventRequest eventRequest) {
-    eventsService.updateByIdEvents(eventId, eventRequest);
-    return ResponseEntity.ok("update event successful admin");
+    return ResponseEntity.ok(eventsService.updateByIdEvents(eventId, eventRequest));
   }
 
   @GetMapping("/search/eventRegistrations")
-  public ResponseEntity<?> getAllEventRegistration(
+  public ResponseEntity<Page<EventRegistrationResponse>> getAllEventRegistration(
       @PageableDefault(page = 0, size = 20) @SortDefault.SortDefaults(@SortDefault(sort = "dateTime",
           direction = Direction.DESC))
       Pageable pageable) {
@@ -57,7 +60,7 @@ public class EventsController {
   }
 
   @PostMapping("/search")
-  public ResponseEntity<?> searchAndFilter(
+  public ResponseEntity<Page<EventsResponse>> searchAndFilter(
       @PageableDefault(page = 0, size = 20) @SortDefault.SortDefaults(@SortDefault(sort = "dateTime",
           direction = Direction.DESC)) Pageable pageable,
       @RequestBody EventSearchRequest eventSearchRequest) {

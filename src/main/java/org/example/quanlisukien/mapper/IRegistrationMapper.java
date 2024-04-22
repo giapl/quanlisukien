@@ -8,7 +8,6 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface IRegistrationMapper {
 
-  @Mapping(source = "phoneNumber",target = "phoneNumber")
   @Mapping(target = "dateTime", expression = "java(java.time.LocalDateTime.now())")
   Registrations convertToEntity(RegistrationRequest registrationRequest);
 }

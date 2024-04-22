@@ -1,7 +1,10 @@
 package org.example.quanlisukien.controller.role;
 
 import jakarta.validation.Valid;
+import java.util.List;
+import org.example.quanlisukien.data.entity.Role;
 import org.example.quanlisukien.data.request.RoleRequest;
+import org.example.quanlisukien.data.response.RoleResponse;
 import org.example.quanlisukien.service.role.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,22 +28,22 @@ public class RoleController {
     this.roleService = roleService;
   }
   @PostMapping("/create")
-  public ResponseEntity<?> createRole(@Valid @RequestBody RoleRequest roleRequest) {
+  public ResponseEntity<Role> createRole(@Valid @RequestBody RoleRequest roleRequest) {
     return ResponseEntity.ok(roleService.createRole(roleRequest));
   }
   @GetMapping()
-  public ResponseEntity<?> findAll() {
+  public ResponseEntity<List<RoleResponse>> findAll() {
     return ResponseEntity.ok(roleService.findByAllRole());
   }
 
   @DeleteMapping("/delete")
-  public ResponseEntity<?> deleteByIdRole(@RequestParam Long roleId) {
+  public ResponseEntity<String> deleteByIdRole(@RequestParam Long roleId) {
     roleService.deleteByIdRole(roleId);
     return ResponseEntity.ok("delete role by id successful");
   }
 
   @PutMapping("/update")
-  public ResponseEntity<?> updateByIdRole(@RequestParam Long roleId, @RequestBody RoleRequest roleRequest) {
+  public ResponseEntity<Role> updateByIdRole(@RequestParam Long roleId, @RequestBody RoleRequest roleRequest) {
     return ResponseEntity.ok(roleService.updateByIdRole(roleId, roleRequest));
   }
 

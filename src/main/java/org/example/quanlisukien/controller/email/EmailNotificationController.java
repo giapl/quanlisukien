@@ -18,7 +18,7 @@ public class EmailNotificationController {
     this.emailService = emailService;
   }
   @PostMapping("/send")
-  public ResponseEntity<?> sendMail(@RequestBody EmailNotificationRequest emailRequest) {
+  public ResponseEntity<String> sendMail(@RequestBody EmailNotificationRequest emailRequest) {
     return ResponseEntity.ok(emailService.sendSimpleMail(emailRequest));
   }
 }
