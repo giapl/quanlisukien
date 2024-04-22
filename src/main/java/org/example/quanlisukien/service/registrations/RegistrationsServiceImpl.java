@@ -1,6 +1,5 @@
 package org.example.quanlisukien.service.registrations;
 
-import java.time.LocalDateTime;
 import org.example.quanlisukien.data.entity.Account;
 import org.example.quanlisukien.data.entity.Events;
 import org.example.quanlisukien.data.entity.Registrations;
@@ -12,6 +11,7 @@ import org.example.quanlisukien.repository.AccountRepository;
 import org.example.quanlisukien.repository.EventsRepository;
 import org.example.quanlisukien.repository.RegistrationsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +38,7 @@ public class RegistrationsServiceImpl implements RegistrationService {
   }
 
   @Override
+  @CacheEvict(value = "eventRegistration",allEntries = true)
   public Registrations registrationEvent(RegistrationRequest registrationRequest) {
     Events events = eventsRepository.findById(registrationRequest.getEventId())
         .orElseThrow(() -> new NotFoundException("no event_id"));
@@ -57,6 +58,7 @@ public class RegistrationsServiceImpl implements RegistrationService {
   }
 
   @Override
+  @CacheEvict(value = "eventRegistration",allEntries = true)
   public void deleteRegistration(Long registrationsId) {
     if (registrationsRepository.existsById(registrationsId)) {
       registrationsRepository.deleteById(registrationsId);
