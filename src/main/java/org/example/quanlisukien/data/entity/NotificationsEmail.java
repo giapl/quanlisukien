@@ -15,26 +15,24 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "notifications")
-public class Notifications {
+@Table(name = "notifications_email")
+public class NotificationsEmail {
 
-  @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "notification_id")
+  @Id
+  @Column(name = "notification_email_id")
   private Long notificationId;
 
-  @Column(name = "topic")
-  private String topic;
+  @Column(name = "source_mail")
+  private String sourceMail;
 
-  @Column(name = "title")
-  private String title;
+  @Column(name = "title_mail")
+  private String titleMail;
 
-  @Column(name = "content")
-  private String content;
-
-  @Column(name = "image_url")
-  private String imageUrl;
+  @Column(name = "messenger_mail")
+  private String messengerMail;
 
   @Column(name = "time_send")
   private LocalDateTime timeSend;
+
 }

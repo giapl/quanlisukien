@@ -6,7 +6,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,26 +14,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "notifications")
-public class Notifications {
+@Table(name = "token_fcm")
+public class TokenFcm {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "notification_id")
-  private Long notificationId;
+  @Column(name = "id")
+  private Long id;
 
-  @Column(name = "topic")
-  private String topic;
-
-  @Column(name = "title")
-  private String title;
-
-  @Column(name = "content")
-  private String content;
-
-  @Column(name = "image_url")
-  private String imageUrl;
-
-  @Column(name = "time_send")
-  private LocalDateTime timeSend;
+  @Column(name = "token")
+  private String token;
 }

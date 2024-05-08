@@ -1,5 +1,6 @@
 package org.example.quanlisukien.repository;
 
+import java.util.List;
 import java.util.Optional;
 import org.example.quanlisukien.data.entity.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,6 +20,9 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
   Boolean existsByEmail(String email); //kiem tra email da ton tai hay ch
 
   @Query(value = "select * from account where user_id =:user_id", nativeQuery = true)
-  Optional<Account> findByUserId(@Param("user_id") Long userId); //lay ra theo dk user_id
+  Optional<Account> findByUserId(@Param("user_id") Long userId);
+
+  @Query(value ="select email from account",nativeQuery = true)
+  List<String> findByEmail();//lay ra theo dk user_id
 
 }

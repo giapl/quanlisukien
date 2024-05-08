@@ -117,6 +117,12 @@ public class SecurityConfig {
             .requestMatchers(
                 new AntPathRequestMatcher("/api/v1/emails/send", HttpMethod.POST.name()))
             .hasAuthority("ADMIN")
+            .requestMatchers(
+                new AntPathRequestMatcher("/api/v1/notification/send", HttpMethod.POST.name()))
+            .hasAuthority("ADMIN")
+            .requestMatchers(
+                new AntPathRequestMatcher("/api/v1/notification/saveToken", HttpMethod.POST.name()))
+            .permitAll()
             .anyRequest()
             .denyAll())
         .httpBasic(Customizer.withDefaults());
