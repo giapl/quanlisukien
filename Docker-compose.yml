@@ -3,23 +3,25 @@ services:
   database:
     image: mysqldb
     container_name: mysql
-    entrypoint:
-      - MYSQL_ROOT_PASSWORD=@Danggiap17
-      - MYSQL_DATABASE=event
-      - ENV MYSQL_USER=app
-      - ENV MYSQL_PASSWORD=123456
+    environment:
+      MYSQL_ROOT_PASSWORD:
+      MYSQL_DATABASE:
+      MYSQL_USER:
+      MYSQL_PASSWORD:
     ports:
       - "3306:3306"
     network_mode: host
     volumes:
-      - database:/var/lib/mysql
+      - database:/var/lib/docker/volumes/database/_data
   app:
     image: appevent
     container_name: be_event
     ports:
       - "8080:8080"
-    network_mode: host
     depends_on:
       - database
+    network_mode: host
+    volumes:
+      - ./src/main/resources/firebaseKey.json:/src/main/resources/firebaseKey.json
 volumes:
-    - database:
+  database:
