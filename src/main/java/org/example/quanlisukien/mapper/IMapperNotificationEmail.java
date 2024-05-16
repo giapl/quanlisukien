@@ -8,8 +8,7 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface IMapperNotificationEmail {
 
-  @Mapping(source = "titleMail", target = "titleMail")
-  @Mapping(source = "messengerMail", target = "messengerMail")
+
   @Mapping(target = "timeSend", expression = "java(java.time.LocalDateTime.now())")
   NotificationsEmail convertToEntity(EmailNotificationRequest emailNotificationRequest);
 

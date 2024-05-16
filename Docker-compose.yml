@@ -1,0 +1,25 @@
+version: '3.7'
+services:
+  database:
+    image: mysqldb
+    container_name: mysql
+    entrypoint:
+      - MYSQL_ROOT_PASSWORD=@Danggiap17
+      - MYSQL_DATABASE=event
+      - ENV MYSQL_USER=app
+      - ENV MYSQL_PASSWORD=123456
+    ports:
+      - "3306:3306"
+    network_mode: host
+    volumes:
+      - database:/var/lib/mysql
+  app:
+    image: appevent
+    container_name: be_event
+    ports:
+      - "8080:8080"
+    network_mode: host
+    depends_on:
+      - database
+volumes:
+    - database:

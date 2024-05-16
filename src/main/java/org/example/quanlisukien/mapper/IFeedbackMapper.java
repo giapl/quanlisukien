@@ -10,12 +10,10 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface IFeedbackMapper {
 
-  @Mapping(source = "feedbacks.feedbackId", target = "feedbackId")
   FeedbackResponse map(Feedbacks feedbacks); //map 1 feedbacks sang feedbackResponse
 
-  @Mapping(source = "account.username", target = "username")
   List<FeedbackResponse> convertFeedbackMapper(List<Feedbacks> feedbacks); //map 1 danh sach sang
-  
+
   @Mapping(target = "dateTime", expression = "java(java.time.LocalDateTime.now())")
   @Mapping(target = "updateTime", expression = "java(java.time.LocalDateTime.now())")
   Feedbacks toFeedbacks(FeedbackRequest feedbackRequest);
